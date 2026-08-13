@@ -361,16 +361,21 @@ h1 span {
 }
 .camera-error {
     position: absolute;
-    inset: 0;
+    top: 50%;
+    left: 50%;
     z-index: 3;
+    width: min(86%, 440px);
+    max-height: calc(100% - 32px);
     display: grid;
     place-items: center;
     align-content: center;
     text-align: center;
     color: #fff;
-    padding: clamp(20px, 5vw, 44px);
+    padding: clamp(16px, 3vw, 28px);
     background: #1b2d45;
-    overflow: auto;
+    border: 3px solid #fff;
+    box-shadow: 6px 6px 0 var(--red);
+    transform: translate(-50%, -50%);
 }
 .error-icon {
     width: 45px;
@@ -383,12 +388,14 @@ h1 span {
     font-weight: 700;
 }
 .camera-error h2 {
-    margin: 18px 0 8px;
+    margin: 12px 0 6px;
+    font-size: clamp(22px, 4vw, 32px);
 }
 .camera-error p {
     max-width: 420px;
     line-height: 1.5;
-    margin-bottom: 25px;
+    margin: 0 0 16px;
+    font-size: clamp(12px, 2vw, 15px);
 }
 .camera-error .primary-button {
     border: 3px solid #fff;
