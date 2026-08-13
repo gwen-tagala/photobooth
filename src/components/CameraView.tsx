@@ -1,4 +1,5 @@
 import type { RefObject } from "react";
+import type { CountdownSeconds } from "../hooks/usePhotobooth";
 import type { CameraMode, PhotoFrame } from "../types/photobooth";
 import { CameraControls } from "./CameraControls";
 import { Countdown } from "./Countdown";
@@ -9,6 +10,7 @@ interface Props {
     cameraMode: CameraMode;
     frame: PhotoFrame;
     countdown: number | null;
+    countdownSeconds: CountdownSeconds;
     currentPhotoIndex: number;
     photoCount: number;
     error: string | null;
@@ -16,6 +18,7 @@ interface Props {
     onSwitch: () => void;
     onCapture: () => void;
     onRetry: () => void;
+    onCountdownSecondsChange: (seconds: CountdownSeconds) => void;
 }
 
 export function CameraView(props: Props) {
@@ -81,6 +84,27 @@ export function CameraView(props: Props) {
                 current={props.currentPhotoIndex}
                 photos={props.photoCount}
             />
+            <div className="countdown-settings" aria-label="Countdown timer">
+                <span>TIMER</span>
+                {[3, 5, 10].map((seconds) => (
+                    <button
+                        key={seconds}
+                        className={
+                            props.countdownSeconds === seconds
+                                ? "timer-option is-selected"
+                                : "timer-option"
+                        }
+                        onClick={() =>
+                            props.onCountdownSecondsChange(
+                                seconds as CountdownSeconds,
+                            )
+                        }
+                        disabled={props.countdown !== null}
+                    >
+                        {seconds}S
+                    </button>
+                ))}
+            </div>
             <CameraControls
                 onSwitch={props.onSwitch}
                 onCapture={props.onCapture}

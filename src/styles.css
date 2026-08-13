@@ -276,6 +276,33 @@ h1 span {
     align-items: center;
     gap: 30px;
 }
+.countdown-settings {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font: 500 11px "DM Mono";
+    letter-spacing: 0.08em;
+}
+.countdown-settings > span {
+    margin-right: 4px;
+}
+.timer-option {
+    min-width: 42px;
+    padding: 7px 8px;
+    border: 2px solid var(--navy);
+    background: transparent;
+    color: var(--navy);
+    font: inherit;
+    cursor: pointer;
+}
+.timer-option.is-selected {
+    background: var(--navy);
+    color: #fff;
+}
+.timer-option:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
 .secondary-button {
     background: transparent;
     color: var(--navy);

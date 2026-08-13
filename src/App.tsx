@@ -8,7 +8,7 @@ import { FrameSelector } from "./components/FrameSelector";
 import { ResultScreen } from "./components/ResultScreen";
 import { frames } from "./data/frames";
 import { useCamera } from "./hooks/useCamera";
-import { COUNTDOWN_SECONDS, usePhotobooth } from "./hooks/usePhotobooth";
+import { usePhotobooth } from "./hooks/usePhotobooth";
 import { captureVideoFrame } from "./utils/capturePhoto";
 import { composePhotostrip } from "./utils/composePhotostrip";
 import { downloadImage } from "./utils/downloadImage";
@@ -43,7 +43,7 @@ export default function App() {
 
     const takePhoto = () => {
         if (!camera.videoRef.current || booth.countdown !== null) return;
-        let value = COUNTDOWN_SECONDS;
+        let value = booth.countdownSeconds;
         booth.setCountdown(value);
         const timer = window.setInterval(() => {
             value -= 1;
@@ -122,6 +122,7 @@ export default function App() {
                     cameraMode={booth.cameraMode}
                     frame={booth.selectedFrame}
                     countdown={booth.countdown}
+                    countdownSeconds={booth.countdownSeconds}
                     currentPhotoIndex={booth.currentPhotoIndex}
                     photoCount={booth.photos.length}
                     error={camera.error}
@@ -129,6 +130,7 @@ export default function App() {
                     onSwitch={switchCamera}
                     onCapture={takePhoto}
                     onRetry={camera.startCamera}
+                    onCountdownSecondsChange={booth.setCountdownSeconds}
                 />
             )}
             {booth.step === "review" && (
