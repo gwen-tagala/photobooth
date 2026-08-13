@@ -268,7 +268,10 @@ h1 span {
     font: 500 11px "DM Mono";
     background: var(--cream);
 }
-.progress-dots span.done,
+.progress-dots span.done {
+    background: var(--navy);
+    color: #fff;
+}
 .progress-dots span.active {
     background: var(--red);
     color: #fff;
@@ -329,7 +332,9 @@ h1 span {
 }
 .camera-switch-button::after {
     content: "↻";
-    font: 500 36px/1 "Space Grotesk", sans-serif;
+    font:
+        500 36px/1 "Space Grotesk",
+        sans-serif;
 }
 .shutter {
     width: 76px;
@@ -339,9 +344,9 @@ h1 span {
     background: var(--paper);
     padding: 7px;
     cursor: pointer;
-    box-shadow:
+    /* box-shadow:
         0 0 0 3px var(--paper),
-        0 0 0 6px var(--navy);
+        0 0 0 6px var(--navy); */
 }
 .shutter span {
     display: block;
