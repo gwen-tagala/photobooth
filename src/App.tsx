@@ -120,6 +120,7 @@ export default function App() {
                 <CameraView
                     videoRef={camera.videoRef}
                     cameraMode={booth.cameraMode}
+                    frame={booth.selectedFrame}
                     countdown={booth.countdown}
                     currentPhotoIndex={booth.currentPhotoIndex}
                     photoCount={booth.photos.length}

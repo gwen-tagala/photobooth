@@ -188,6 +188,12 @@ h1 span {
 .camera-video.mirrored {
     transform: scaleX(-1);
 }
+.camera-frame-overlay {
+    position: absolute;
+    height: auto;
+    max-width: none;
+    pointer-events: none;
+}
 .viewfinder-corner {
     position: absolute;
     width: 30px;

@@ -1,5 +1,5 @@
 import type { RefObject } from "react";
-import type { CameraMode } from "../types/photobooth";
+import type { CameraMode, PhotoFrame } from "../types/photobooth";
 import { CameraControls } from "./CameraControls";
 import { Countdown } from "./Countdown";
 import { PhotoProgress } from "./PhotoProgress";
@@ -7,6 +7,7 @@ import { PhotoProgress } from "./PhotoProgress";
 interface Props {
     videoRef: RefObject<HTMLVideoElement | null>;
     cameraMode: CameraMode;
+    frame: PhotoFrame;
     countdown: number | null;
     currentPhotoIndex: number;
     photoCount: number;
@@ -19,6 +20,12 @@ interface Props {
 
 export function CameraView(props: Props) {
     const mirrored = props.cameraMode === "user";
+    const slot = props.frame.photoSlots[props.currentPhotoIndex];
+    const overlayStyle = {
+        width: `${(props.frame.width / slot.width) * 100}%`,
+        left: `${(-slot.x / slot.width) * 100}%`,
+        top: `${(-slot.y / slot.width) * 100}%`,
+    };
     return (
         <main className="camera-page page-shell">
             <div className="camera-top">
@@ -26,7 +33,10 @@ export function CameraView(props: Props) {
                 <span className="camera-label">4-CUT PHOTOBOOTH</span>
             </div>
 
-            <div className="camera-stage">
+            <div
+                className="camera-stage"
+                style={{ aspectRatio: `${slot.width} / ${slot.height}` }}
+            >
                 {props.error ? (
                     <div className="camera-error">
                         <div className="error-icon">!</div>
@@ -48,6 +58,15 @@ export function CameraView(props: Props) {
                         playsInline
                         muted
                         aria-label="Camera preview"
+                    />
+                )}
+                {!props.error && (
+                    <img
+                        className="camera-frame-overlay"
+                        src={props.frame.image}
+                        style={overlayStyle}
+                        alt=""
+                        aria-hidden="true"
                     />
                 )}
                 <div className="viewfinder-corner tl" />
