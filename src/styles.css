@@ -318,12 +318,18 @@ h1 span {
     opacity: 0.4;
 }
 .camera-switch-button {
-    min-height: 58px;
-    min-width: 180px;
-    padding: 0 20px;
-    border: 3px solid var(--navy);
-    background: var(--cream);
-    font-size: 13px;
+    width: 76px;
+    height: 76px;
+    min-width: 0;
+    padding: 0;
+    border: 4px solid var(--navy);
+    border-radius: 50%;
+    background: var(--paper);
+    font-size: 0;
+}
+.camera-switch-button::after {
+    content: "↻";
+    font: 500 36px/1 "Space Grotesk", sans-serif;
 }
 .shutter {
     width: 76px;
@@ -605,13 +611,10 @@ h1 span {
     .secondary-button span {
         display: none;
     }
-    .camera-switch-button span {
-        display: inline;
-    }
     .camera-switch-button {
-        min-width: 0;
-        flex: 1;
-        padding: 0 12px;
+        width: 68px;
+        height: 68px;
+        flex: 0 0 68px;
     }
     .camera-controls {
         width: 100%;
