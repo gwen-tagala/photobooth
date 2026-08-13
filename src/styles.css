@@ -360,14 +360,17 @@ h1 span {
     opacity: 0.7;
 }
 .camera-error {
-    height: 100%;
+    position: absolute;
+    inset: 0;
+    z-index: 3;
     display: grid;
     place-items: center;
     align-content: center;
     text-align: center;
     color: #fff;
-    padding: 30px;
+    padding: clamp(20px, 5vw, 44px);
     background: #1b2d45;
+    overflow: auto;
 }
 .error-icon {
     width: 45px;
@@ -386,6 +389,9 @@ h1 span {
     max-width: 420px;
     line-height: 1.5;
     margin-bottom: 25px;
+}
+.camera-error .primary-button {
+    border: 3px solid #fff;
 }
 .section-heading {
     text-align: center;
