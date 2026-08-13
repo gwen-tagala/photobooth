@@ -23,13 +23,28 @@ export function PhotoReview({ photos, frame, onRetake, onContinue }: Props) {
                 {photos.map((photo, index) => (
                     <article className="review-card" key={photo.id}>
                         <div className="review-number">0{index + 1}</div>
-                        <img
-                            src={photo.dataUrl}
-                            alt={`Captured photo ${index + 1}`}
+                        <div
+                            className="review-photo-preview"
                             style={{
                                 aspectRatio: `${frame.photoSlots[index].width} / ${frame.photoSlots[index].height}`,
                             }}
-                        />
+                        >
+                            <img
+                                src={photo.dataUrl}
+                                alt={`Captured photo ${index + 1}`}
+                            />
+                            <img
+                                className="review-frame-overlay"
+                                src={frame.image}
+                                style={{
+                                    width: `${(frame.width / frame.photoSlots[index].width) * 100}%`,
+                                    left: `${(-frame.photoSlots[index].x / frame.photoSlots[index].width) * 100}%`,
+                                    top: `${(-frame.photoSlots[index].y / frame.photoSlots[index].width) * 100}%`,
+                                }}
+                                alt=""
+                                aria-hidden="true"
+                            />
+                        </div>
                         <button
                             className="retake-button"
                             onClick={() => onRetake(index)}
