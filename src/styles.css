@@ -158,20 +158,22 @@ h1 span {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    gap: clamp(12px, 2vh, 22px);
 }
 .camera-top {
-    width: 100%;
+    width: min(100%, 620px);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 18px;
+    margin: 0;
 }
 .camera-label {
     font: 500 11px "DM Mono";
     letter-spacing: 0.12em;
 }
 .camera-stage {
-    width: min(100%, 680px);
+    width: min(100%, 620px);
     aspect-ratio: 4/5;
     position: relative;
     background: #111;
@@ -243,11 +245,11 @@ h1 span {
     animation: flash 0.18s ease;
 }
 .photo-progress {
-    width: min(100%, 680px);
+    width: min(100%, 620px);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 25px 0 18px;
+    margin: 0;
 }
 .photo-progress strong {
     font: 500 13px "DM Mono";
@@ -272,9 +274,11 @@ h1 span {
     color: #fff;
 }
 .camera-controls {
+    width: min(100%, 520px);
     display: flex;
     align-items: center;
-    gap: 30px;
+    justify-content: center;
+    gap: clamp(18px, 5vw, 36px);
 }
 .countdown-settings {
     display: flex;
@@ -282,6 +286,7 @@ h1 span {
     gap: 8px;
     font: 500 11px "DM Mono";
     letter-spacing: 0.08em;
+    justify-content: center;
 }
 .countdown-settings > span {
     margin-right: 4px;
@@ -314,7 +319,8 @@ h1 span {
 }
 .camera-switch-button {
     min-height: 58px;
-    padding: 0 18px;
+    min-width: 180px;
+    padding: 0 20px;
     border: 3px solid var(--navy);
     background: var(--cream);
     font-size: 13px;
@@ -339,6 +345,8 @@ h1 span {
     background: var(--red);
 }
 .camera-hint {
+    max-width: 440px;
+    margin: 0;
     text-align: center;
     font-size: 12px;
     opacity: 0.7;
@@ -583,22 +591,31 @@ h1 span {
         padding: 45px 25px;
     }
     .camera-stage {
-        aspect-ratio: 3/4;
+        width: 100%;
     }
     .camera-top {
-        margin-bottom: 12px;
+        margin: 0;
     }
     .camera-label {
         display: none;
     }
     .photo-progress {
-        margin-top: 20px;
+        margin: 0;
     }
     .secondary-button span {
         display: none;
     }
     .camera-switch-button span {
         display: inline;
+    }
+    .camera-switch-button {
+        min-width: 0;
+        flex: 1;
+        padding: 0 12px;
+    }
+    .camera-controls {
+        width: 100%;
+        gap: 24px;
     }
     .shutter {
         width: 68px;
