@@ -1,0 +1,29 @@
+interface Props {
+    onSwitch: () => void;
+    onCapture: () => void;
+    disabled: boolean;
+}
+
+export function CameraControls({ onSwitch, onCapture, disabled }: Props) {
+    return (
+        <div className="camera-controls">
+            <button
+                className="secondary-button"
+                onClick={onSwitch}
+                disabled={disabled}
+                aria-label="Switch camera"
+            >
+                ↻ <span>SWITCH CAMERA</span>
+            </button>
+
+            <button
+                className="shutter"
+                onClick={onCapture}
+                disabled={disabled}
+                aria-label="Take photo"
+            >
+                <span />
+            </button>
+        </div>
+    );
+}
