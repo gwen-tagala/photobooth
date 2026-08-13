@@ -164,6 +164,7 @@ export default function App() {
             {booth.step === "review" && (
                 <PhotoReview
                     photos={booth.photos}
+                    frame={booth.selectedFrame}
                     onRetake={retake}
                     onContinue={continueToFrame}
                 />

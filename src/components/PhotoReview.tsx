@@ -1,12 +1,13 @@
-import type { CapturedPhoto } from "../types/photobooth";
+import type { CapturedPhoto, PhotoFrame } from "../types/photobooth";
 
 interface Props {
     photos: CapturedPhoto[];
+    frame: PhotoFrame;
     onRetake: (index: number) => void;
     onContinue: () => void;
 }
 
-export function PhotoReview({ photos, onRetake, onContinue }: Props) {
+export function PhotoReview({ photos, frame, onRetake, onContinue }: Props) {
     return (
         <main className="review-page page-shell">
             <div className="section-heading">
@@ -25,6 +26,9 @@ export function PhotoReview({ photos, onRetake, onContinue }: Props) {
                         <img
                             src={photo.dataUrl}
                             alt={`Captured photo ${index + 1}`}
+                            style={{
+                                aspectRatio: `${frame.photoSlots[index].width} / ${frame.photoSlots[index].height}`,
+                            }}
                         />
                         <button
                             className="retake-button"

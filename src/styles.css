@@ -410,7 +410,6 @@ h1 span {
 .review-card img {
     display: block;
     width: 100%;
-    aspect-ratio: 3/4;
     object-fit: cover;
 }
 .review-number {
