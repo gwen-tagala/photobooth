@@ -15,6 +15,7 @@ interface Props {
     photoCount: number;
     error: string | null;
     isStarting: boolean;
+    isCapturing: boolean;
     onSwitch: () => void;
     onCapture: () => void;
     onRetry: () => void;
@@ -99,7 +100,7 @@ export function CameraView(props: Props) {
                                 seconds as CountdownSeconds,
                             )
                         }
-                        disabled={props.countdown !== null}
+                        disabled={props.countdown !== null || props.isCapturing}
                     >
                         {seconds}S
                     </button>
@@ -110,6 +111,7 @@ export function CameraView(props: Props) {
                 onCapture={props.onCapture}
                 disabled={
                     props.isStarting ||
+                    props.isCapturing ||
                     props.countdown !== null ||
                     !!props.error
                 }

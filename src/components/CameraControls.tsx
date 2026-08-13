@@ -8,7 +8,7 @@ export function CameraControls({ onSwitch, onCapture, disabled }: Props) {
     return (
         <div className="camera-controls">
             <button
-                className="secondary-button"
+                className="secondary-button camera-switch-button"
                 onClick={onSwitch}
                 disabled={disabled}
                 aria-label="Switch camera"

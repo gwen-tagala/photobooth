@@ -20,7 +20,9 @@ export default function App() {
     const booth = usePhotobooth(DEFAULT_FRAME);
     const camera = useCamera(booth.cameraMode);
     const [flash, setFlash] = useState(false);
+    const [isCapturing, setIsCapturing] = useState(false);
     const captureTimeout = useRef<number | null>(null);
+    const isCapturingRef = useRef(false);
 
     const start = async () => {
         booth.setStep("camera");
@@ -32,17 +34,22 @@ export default function App() {
         );
     };
 
-    useEffect(() => {
-        if (booth.step === "camera") void camera.startCamera();
-        else camera.stopCamera();
-        return () => {
-            if (captureTimeout.current)
-                window.clearTimeout(captureTimeout.current);
-        };
-    }, [booth.step, booth.cameraMode]);
+    const cancelCaptureSequence = () => {
+        if (captureTimeout.current !== null) {
+            window.clearInterval(captureTimeout.current);
+            window.clearTimeout(captureTimeout.current);
+            captureTimeout.current = null;
+        }
+        isCapturingRef.current = false;
+        setIsCapturing(false);
+        booth.setCountdown(null);
+    };
 
-    const takePhoto = () => {
-        if (!camera.videoRef.current || booth.countdown !== null) return;
+    const captureNextPhoto = (photoIndex: number) => {
+        if (!camera.videoRef.current) {
+            cancelCaptureSequence();
+            return;
+        }
         let value = booth.countdownSeconds;
         booth.setCountdown(value);
         const timer = window.setInterval(() => {
@@ -59,22 +66,41 @@ export default function App() {
                 );
                 booth.setPhotos((prev) => {
                     const next = [...prev];
-                    next[booth.currentPhotoIndex] = {
-                        id: booth.currentPhotoIndex + 1,
+                    next[photoIndex] = {
+                        id: photoIndex + 1,
                         dataUrl,
                     };
                     return next;
                 });
-                if (booth.currentPhotoIndex < 3)
-                    booth.setCurrentPhotoIndex((i) => i + 1);
-                else {
+                if (photoIndex < 3) {
+                    booth.setCurrentPhotoIndex(photoIndex + 1);
+                    captureTimeout.current = window.setTimeout(
+                        () => captureNextPhoto(photoIndex + 1),
+                        700,
+                    );
+                } else {
                     camera.stopCamera();
                     booth.setStep("review");
+                    isCapturingRef.current = false;
+                    setIsCapturing(false);
                 }
             }
         }, 1000);
         captureTimeout.current = timer;
     };
+
+    const takePhoto = () => {
+        if (isCapturingRef.current || !camera.videoRef.current) return;
+        isCapturingRef.current = true;
+        setIsCapturing(true);
+        captureNextPhoto(booth.currentPhotoIndex);
+    };
+
+    useEffect(() => {
+        if (booth.step === "camera") void camera.startCamera();
+        else camera.stopCamera();
+        return cancelCaptureSequence;
+    }, [booth.step, booth.cameraMode]);
 
     const retake = async (index: number) => {
         booth.setCurrentPhotoIndex(index);
@@ -108,6 +134,7 @@ export default function App() {
     };
 
     const reset = () => {
+        cancelCaptureSequence();
         camera.stopCamera();
         booth.reset();
     };
@@ -127,6 +154,7 @@ export default function App() {
                     photoCount={booth.photos.length}
                     error={camera.error}
                     isStarting={camera.isStarting}
+                    isCapturing={isCapturing}
                     onSwitch={switchCamera}
                     onCapture={takePhoto}
                     onRetry={camera.startCamera}
