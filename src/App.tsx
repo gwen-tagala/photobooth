@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import { LandingPage } from "./components/LandingPage";
 import { CameraView } from "./components/CameraView";
 import { PhotoReview } from "./components/PhotoReview";
@@ -112,7 +113,8 @@ export default function App() {
     };
 
     return (
-        <div className={`app ${flash ? "is-flashing" : ""}`}>
+        <>
+            <div className={`app ${flash ? "is-flashing" : ""}`}>
             {booth.step === "landing" && <LandingPage onStart={start} />}
             {booth.step === "camera" && (
                 <CameraView
@@ -157,6 +159,8 @@ export default function App() {
                     onReset={reset}
                 />
             )}
-        </div>
+            </div>
+            <Analytics />
+        </>
     );
 }
