@@ -13,11 +13,11 @@ export function PhotoReview({ photos, frame, onRetake, onContinue }: Props) {
             <div className="section-heading">
                 <span className="eyebrow">CONTACT SHEET</span>
                 <h2>
-                    REVIEW YOUR
+                    CHECK THE
                     <br />
-                    <em>MASTERPIECES.</em>
+                    <em>EVIDENCE.</em>
                 </h2>
-                <p>Not feeling one? Retake just that shot.</p>
+                <p>Retake any photo before continuing.</p>
             </div>
             <div className="review-grid">
                 {photos.map((photo, index) => (

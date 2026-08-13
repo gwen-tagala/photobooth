@@ -18,15 +18,15 @@ export function FrameSelector({
     return (
         <main className="frame-page page-shell">
             <div className="section-heading">
-                <span className="eyebrow">PICK YOUR EVIDENCE</span>
+                <span className="eyebrow">HOT NERD THEORY</span>
 
                 <h2>
-                    YOUR PHOTOS,
+                    SELECT A
                     <br />
-                    <em>YOUR FRAME.</em>
+                    <em>FRAME.</em>
                 </h2>
 
-                <p>The birthday-exclusive HOT NERD THEORY frame is ready.</p>
+                <p>Choose the frame for your photo strip.</p>
             </div>
 
             <div className="frame-layout">

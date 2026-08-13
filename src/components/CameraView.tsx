@@ -34,7 +34,7 @@ export function CameraView(props: Props) {
         <main className="camera-page page-shell">
             <div className="camera-top">
                 <span className="eyebrow">HOT NERD THEORY</span>
-                <span className="camera-label">4-CUT PHOTOBOOTH</span>
+                <span className="camera-label">PHOTOBOOTH SESSION</span>
             </div>
 
             <div
@@ -117,7 +117,7 @@ export function CameraView(props: Props) {
                 }
             />
             <p className="camera-hint">
-                Smile, genius. The countdown starts when you tap the shutter.
+                Choose a timer, then take your four photos.
             </p>
         </main>
     );

@@ -1,20 +1,22 @@
 import { PhotostripPreview } from "./PhotostripPreview";
+
 interface Props {
     image: string | null;
     onDownload: () => void;
     onReset: () => void;
 }
+
 export function ResultScreen({ image, onDownload, onReset }: Props) {
     return (
         <main className="result-page page-shell">
             <div className="result-copy">
-                <span className="eyebrow">EVIDENCE SAVED</span>
+                <span className="eyebrow">HOT NERD THEORY</span>
                 <h2>
-                    YOU DID IT,
+                    HYPOTHESIS
                     <br />
-                    <em>NERD.</em>
+                    <em>CONFIRMED.</em>
                 </h2>
-                <p>Your HOT NERD THEORY photostrip is ready.</p>
+                <p>Your photo strip is ready.</p>
             </div>
             <PhotostripPreview image={image} />
             <div className="result-actions">
@@ -23,10 +25,10 @@ export function ResultScreen({ image, onDownload, onReset }: Props) {
                     onClick={onDownload}
                     disabled={!image}
                 >
-                    DOWNLOAD PHOTO STRIP ↓
+                    SAVE PHOTO STRIP
                 </button>
                 <button className="text-button" onClick={onReset}>
-                    TAKE ANOTHER SET
+                    START AGAIN
                 </button>
             </div>
             <p className="privacy-note">
