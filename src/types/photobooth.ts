@@ -40,6 +40,8 @@ export interface PhotoFrame {
     image: string;
     width: number;
     height: number;
+    showCameraOverlay: boolean;
+    showReviewOverlay: boolean;
     photoSlots: PhotoSlot[];
 }
 

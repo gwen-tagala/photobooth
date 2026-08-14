@@ -72,7 +72,7 @@ export function CameraView(props: Props) {
                         aria-label="Camera preview"
                     />
                 )}
-                {!props.error && (
+                {!props.error && props.frame.showCameraOverlay && (
                     <img
                         className="camera-frame-overlay"
                         src={props.frame.image}
