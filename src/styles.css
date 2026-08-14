@@ -163,7 +163,7 @@ h1 span {
     gap: clamp(12px, 2vh, 22px);
 }
 .camera-top {
-    width: min(100%, 560px);
+    width: min(100%, 500px);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -174,7 +174,7 @@ h1 span {
     letter-spacing: 0.12em;
 }
 .camera-stage {
-    width: min(100%, 560px);
+    width: min(100%, 500px);
     aspect-ratio: 4/5;
     position: relative;
     background: #111;
@@ -246,7 +246,7 @@ h1 span {
     animation: flash 0.18s ease;
 }
 .photo-progress {
-    width: min(100%, 560px);
+    width: min(100%, 500px);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -291,6 +291,34 @@ h1 span {
     font: 500 11px "DM Mono";
     letter-spacing: 0.08em;
     justify-content: center;
+}
+.slot-check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font: 500 10px "DM Mono";
+    letter-spacing: 0.08em;
+}
+.slot-check > span {
+    margin-right: 4px;
+}
+.slot-check-option {
+    width: 28px;
+    height: 28px;
+    border: 2px solid var(--navy);
+    background: transparent;
+    color: var(--navy);
+    font: inherit;
+    cursor: pointer;
+}
+.slot-check-option.is-selected {
+    background: var(--blue);
+    color: #fff;
+}
+.slot-check-option:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
 }
 .countdown-settings > span {
     margin-right: 4px;

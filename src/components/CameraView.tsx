@@ -12,6 +12,8 @@ interface Props {
     countdown: number | null;
     countdownSeconds: CountdownSeconds;
     currentPhotoIndex: number;
+    activeSlotIndex: number;
+    previewSlotIndex: number | null;
     photoCount: number;
     error: string | null;
     isStarting: boolean;
@@ -20,11 +22,12 @@ interface Props {
     onCapture: () => void;
     onRetry: () => void;
     onCountdownSecondsChange: (seconds: CountdownSeconds) => void;
+    onPreviewSlotChange: (index: number | null) => void;
 }
 
 export function CameraView(props: Props) {
     const mirrored = props.cameraMode === "user";
-    const slot = props.frame.photoSlots[props.currentPhotoIndex];
+    const slot = props.frame.photoSlots[props.activeSlotIndex];
     const overlayStyle = {
         width: `${(props.frame.width / slot.width) * 100}%`,
         left: `${(-slot.x / slot.width) * 100}%`,
@@ -85,6 +88,23 @@ export function CameraView(props: Props) {
                 current={props.currentPhotoIndex}
                 photos={props.photoCount}
             />
+            <div className="slot-check" aria-label="Slot alignment check">
+                <span>SLOT CHECK</span>
+                {[0, 1, 2, 3].map((index) => (
+                    <button
+                        key={index}
+                        className={
+                            props.activeSlotIndex === index
+                                ? "slot-check-option is-selected"
+                                : "slot-check-option"
+                        }
+                        onClick={() => props.onPreviewSlotChange(index)}
+                        disabled={props.countdown !== null || props.isCapturing}
+                    >
+                        {index + 1}
+                    </button>
+                ))}
+            </div>
             <div className="countdown-settings" aria-label="Countdown timer">
                 <span>TIMER</span>
                 {[3, 5, 10].map((seconds) => (

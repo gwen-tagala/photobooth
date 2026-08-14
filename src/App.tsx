@@ -21,6 +21,9 @@ export default function App() {
     const camera = useCamera(booth.cameraMode);
     const [flash, setFlash] = useState(false);
     const [isCapturing, setIsCapturing] = useState(false);
+    const [previewSlotIndex, setPreviewSlotIndex] = useState<number | null>(
+        null,
+    );
     const captureTimeout = useRef<number | null>(null);
     const isCapturingRef = useRef(false);
 
@@ -91,6 +94,7 @@ export default function App() {
 
     const takePhoto = () => {
         if (isCapturingRef.current || !camera.videoRef.current) return;
+        setPreviewSlotIndex(null);
         isCapturingRef.current = true;
         setIsCapturing(true);
         captureNextPhoto(booth.currentPhotoIndex);
@@ -103,6 +107,7 @@ export default function App() {
     }, [booth.step, booth.cameraMode]);
 
     const retake = async (index: number) => {
+        setPreviewSlotIndex(null);
         booth.setCurrentPhotoIndex(index);
         booth.setStep("camera");
     };
@@ -135,6 +140,7 @@ export default function App() {
 
     const reset = () => {
         cancelCaptureSequence();
+        setPreviewSlotIndex(null);
         camera.stopCamera();
         booth.reset();
     };
@@ -151,6 +157,8 @@ export default function App() {
                     countdown={booth.countdown}
                     countdownSeconds={booth.countdownSeconds}
                     currentPhotoIndex={booth.currentPhotoIndex}
+                    activeSlotIndex={previewSlotIndex ?? booth.currentPhotoIndex}
+                    previewSlotIndex={previewSlotIndex}
                     photoCount={booth.photos.length}
                     error={camera.error}
                     isStarting={camera.isStarting}
@@ -159,6 +167,7 @@ export default function App() {
                     onCapture={takePhoto}
                     onRetry={camera.startCamera}
                     onCountdownSecondsChange={booth.setCountdownSeconds}
+                    onPreviewSlotChange={setPreviewSlotIndex}
                 />
             )}
             {booth.step === "review" && (
