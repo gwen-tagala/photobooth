@@ -163,7 +163,7 @@ h1 span {
     gap: clamp(12px, 2vh, 22px);
 }
 .camera-top {
-    width: min(100%, 620px);
+    width: min(100%, 560px);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -174,7 +174,7 @@ h1 span {
     letter-spacing: 0.12em;
 }
 .camera-stage {
-    width: min(100%, 620px);
+    width: min(100%, 560px);
     aspect-ratio: 4/5;
     position: relative;
     background: #111;
@@ -246,7 +246,7 @@ h1 span {
     animation: flash 0.18s ease;
 }
 .photo-progress {
-    width: min(100%, 620px);
+    width: min(100%, 560px);
     display: flex;
     justify-content: space-between;
     align-items: center;
