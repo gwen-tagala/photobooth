@@ -63,10 +63,21 @@ export default function App() {
                 booth.setCountdown(null);
                 setFlash(true);
                 window.setTimeout(() => setFlash(false), 180);
+
+                // const dataUrl = captureVideoFrame(
+                //     camera.videoRef.current!,
+                //     booth.cameraMode === "user",
+                // );
+
+                const slot = booth.selectedFrame.photoSlots[photoIndex];
+
                 const dataUrl = captureVideoFrame(
                     camera.videoRef.current!,
                     booth.cameraMode === "user",
+                    slot.camera.width,
+                    slot.camera.height,
                 );
+
                 booth.setPhotos((prev) => {
                     const next = [...prev];
                     next[photoIndex] = {
@@ -75,6 +86,7 @@ export default function App() {
                     };
                     return next;
                 });
+
                 if (photoIndex < 3) {
                     booth.setCurrentPhotoIndex(photoIndex + 1);
                     captureTimeout.current = window.setTimeout(
@@ -148,58 +160,60 @@ export default function App() {
     return (
         <>
             <div className={`app ${flash ? "is-flashing" : ""}`}>
-            {booth.step === "landing" && <LandingPage onStart={start} />}
-            {booth.step === "camera" && (
-                <CameraView
-                    videoRef={camera.videoRef}
-                    cameraMode={booth.cameraMode}
-                    frame={booth.selectedFrame}
-                    countdown={booth.countdown}
-                    countdownSeconds={booth.countdownSeconds}
-                    currentPhotoIndex={booth.currentPhotoIndex}
-                    activeSlotIndex={previewSlotIndex ?? booth.currentPhotoIndex}
-                    previewSlotIndex={previewSlotIndex}
-                    photoCount={booth.photos.length}
-                    error={camera.error}
-                    isStarting={camera.isStarting}
-                    isCapturing={isCapturing}
-                    onSwitch={switchCamera}
-                    onCapture={takePhoto}
-                    onRetry={camera.startCamera}
-                    onCountdownSecondsChange={booth.setCountdownSeconds}
-                    onPreviewSlotChange={setPreviewSlotIndex}
-                />
-            )}
-            {booth.step === "review" && (
-                <PhotoReview
-                    photos={booth.photos}
-                    frame={booth.selectedFrame}
-                    onRetake={retake}
-                    onContinue={continueToFrame}
-                />
-            )}
-            {booth.step === "frame-selection" && (
-                <FrameSelector
-                    frames={frames}
-                    selected={booth.selectedFrame}
-                    onSelect={chooseFrame}
-                    onContinue={showResult}
-                    preview={booth.composite}
-                />
-            )}
-            {booth.step === "result" && (
-                <ResultScreen
-                    image={booth.composite}
-                    onDownload={() =>
-                        booth.composite &&
-                        downloadImage(
-                            booth.composite,
-                            "JISUNG_GLOBAL_HOT_NERD_THEORY_PHOTOBOOTH.png",
-                        )
-                    }
-                    onReset={reset}
-                />
-            )}
+                {booth.step === "landing" && <LandingPage onStart={start} />}
+                {booth.step === "camera" && (
+                    <CameraView
+                        videoRef={camera.videoRef}
+                        cameraMode={booth.cameraMode}
+                        frame={booth.selectedFrame}
+                        countdown={booth.countdown}
+                        countdownSeconds={booth.countdownSeconds}
+                        currentPhotoIndex={booth.currentPhotoIndex}
+                        activeSlotIndex={
+                            previewSlotIndex ?? booth.currentPhotoIndex
+                        }
+                        previewSlotIndex={previewSlotIndex}
+                        photoCount={booth.photos.length}
+                        error={camera.error}
+                        isStarting={camera.isStarting}
+                        isCapturing={isCapturing}
+                        onSwitch={switchCamera}
+                        onCapture={takePhoto}
+                        onRetry={camera.startCamera}
+                        onCountdownSecondsChange={booth.setCountdownSeconds}
+                        onPreviewSlotChange={setPreviewSlotIndex}
+                    />
+                )}
+                {booth.step === "review" && (
+                    <PhotoReview
+                        photos={booth.photos}
+                        frame={booth.selectedFrame}
+                        onRetake={retake}
+                        onContinue={continueToFrame}
+                    />
+                )}
+                {booth.step === "frame-selection" && (
+                    <FrameSelector
+                        frames={frames}
+                        selected={booth.selectedFrame}
+                        onSelect={chooseFrame}
+                        onContinue={showResult}
+                        preview={booth.composite}
+                    />
+                )}
+                {booth.step === "result" && (
+                    <ResultScreen
+                        image={booth.composite}
+                        onDownload={() =>
+                            booth.composite &&
+                            downloadImage(
+                                booth.composite,
+                                "JISUNG_GLOBAL_HOT_NERD_THEORY_PHOTOBOOTH.png",
+                            )
+                        }
+                        onReset={reset}
+                    />
+                )}
             </div>
             <Analytics />
         </>
