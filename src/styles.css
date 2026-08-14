@@ -632,13 +632,16 @@ h1 span {
         text-align: center;
         margin: 30px 0 0;
     }
-    .stamp {
-        display: none;
-    }
 }
 @media (max-width: 480px) {
     .landing-card {
         padding: 45px 25px;
+    }
+    .stamp {
+        right: 14px;
+        top: 14px;
+        font-size: 9px;
+        padding: 5px 6px;
     }
     .camera-stage {
         width: 100%;
