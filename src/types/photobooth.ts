@@ -2,7 +2,7 @@ export type BoothStep =
     | "landing"
     | "camera"
     | "review"
-    | "frame-selection"
+    // | "frame-selection"
     | "result";
 export type CameraMode = "user" | "environment";
 

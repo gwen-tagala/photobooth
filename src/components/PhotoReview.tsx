@@ -55,7 +55,7 @@ export function PhotoReview({ photos, frame, onRetake, onContinue }: Props) {
                 ))}
             </div>
             <button className="primary-button wide" onClick={onContinue}>
-                CONTINUE TO FRAME →
+                VIEW RESULT →
             </button>
         </main>
     );

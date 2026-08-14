@@ -4,7 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { LandingPage } from "./components/LandingPage";
 import { CameraView } from "./components/CameraView";
 import { PhotoReview } from "./components/PhotoReview";
-import { FrameSelector } from "./components/FrameSelector";
+// import { FrameSelector } from "./components/FrameSelector";
 import { ResultScreen } from "./components/ResultScreen";
 import { frames } from "./data/frames";
 import { useCamera } from "./hooks/useCamera";
@@ -146,21 +146,21 @@ export default function App() {
         booth.setStep("camera");
     };
 
-    const continueToFrame = async () => {
-        booth.setStep("frame-selection");
-        const result = await composePhotostrip(
-            booth.photos,
-            booth.selectedFrame,
-            2,
-        );
-        booth.setComposite(result);
-    };
+    // const continueToFrame = async () => {
+    //     booth.setStep("frame-selection");
+    //     const result = await composePhotostrip(
+    //         booth.photos,
+    //         booth.selectedFrame,
+    //         2,
+    //     );
+    //     booth.setComposite(result);
+    // };
 
-    const chooseFrame = async (frame: typeof DEFAULT_FRAME) => {
-        booth.setSelectedFrame(frame);
-        const result = await composePhotostrip(booth.photos, frame, 2);
-        booth.setComposite(result);
-    };
+    // const chooseFrame = async (frame: typeof DEFAULT_FRAME) => {
+    //     booth.setSelectedFrame(frame);
+    //     const result = await composePhotostrip(booth.photos, frame, 2);
+    //     booth.setComposite(result);
+    // };
 
     const showResult = async () => {
         const result = await composePhotostrip(
@@ -211,10 +211,10 @@ export default function App() {
                         photos={booth.photos}
                         frame={booth.selectedFrame}
                         onRetake={retake}
-                        onContinue={continueToFrame}
+                        onContinue={showResult}
                     />
                 )}
-                {booth.step === "frame-selection" && (
+                {/* {booth.step === "frame-selection" && (
                     <FrameSelector
                         frames={frames}
                         selected={booth.selectedFrame}
@@ -222,7 +222,7 @@ export default function App() {
                         onContinue={showResult}
                         preview={booth.composite}
                     />
-                )}
+                )} */}
                 {booth.step === "result" && (
                     <ResultScreen
                         image={booth.composite}
