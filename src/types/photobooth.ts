@@ -6,6 +6,11 @@ export type BoothStep =
     | "result";
 export type CameraMode = "user" | "environment";
 
+export type CaptureStatus =
+    | { state: "idle" }
+    | { state: "taking"; photoIndex: number }
+    | { state: "captured"; photoIndex: number };
+
 export interface ComposePhotostripOptions {
     x: number;
     y: number;

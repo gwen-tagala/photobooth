@@ -1,6 +1,10 @@
 import type { RefObject } from "react";
 import type { CountdownSeconds } from "../hooks/usePhotobooth";
-import type { CameraMode, PhotoFrame } from "../types/photobooth";
+import type {
+    CameraMode,
+    CaptureStatus,
+    PhotoFrame,
+} from "../types/photobooth";
 import { CameraControls } from "./CameraControls";
 import { Countdown } from "./Countdown";
 import { PhotoProgress } from "./PhotoProgress";
@@ -18,6 +22,7 @@ interface Props {
     error: string | null;
     isStarting: boolean;
     isCapturing: boolean;
+    captureStatus: CaptureStatus;
     onSwitch: () => void;
     onCapture: () => void;
     onRetry: () => void;
@@ -35,6 +40,13 @@ export function CameraView(props: Props) {
         left: `${(-cameraSlot.x / cameraSlot.width) * 100}%`,
         top: `${(-cameraSlot.y / cameraSlot.width) * 100}%`,
     };
+
+    const cameraHint =
+        props.captureStatus.state === "taking"
+            ? `Get ready for photo #${props.captureStatus.photoIndex + 1}...`
+            : props.captureStatus.state === "captured"
+              ? `Photo #${props.captureStatus.photoIndex + 1} acquired`
+              : "Ready when you are. Set your timer and let's go!";
 
     return (
         <main className="camera-page page-shell">
@@ -155,9 +167,7 @@ export function CameraView(props: Props) {
                     }
                 />
 
-                <p className="camera-hint">
-                    Choose a timer then take your photos.
-                </p>
+                <p className="camera-hint">{cameraHint}</p>
             </div>
         </main>
     );

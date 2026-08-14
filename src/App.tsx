@@ -13,6 +13,7 @@ import { captureVideoFrame } from "./utils/capturePhoto";
 import { composePhotostrip } from "./utils/composePhotostrip";
 import { downloadImage } from "./utils/downloadImage";
 import "./styles.css";
+import { CaptureStatus } from "./types/photobooth";
 
 const DEFAULT_FRAME = frames[0];
 
@@ -21,6 +22,9 @@ export default function App() {
     const camera = useCamera(booth.cameraMode);
     const [flash, setFlash] = useState(false);
     const [isCapturing, setIsCapturing] = useState(false);
+    const [captureStatus, setCaptureStatus] = useState<CaptureStatus>({
+        state: "idle",
+    });
     const [previewSlotIndex, setPreviewSlotIndex] = useState<number | null>(
         null,
     );
@@ -46,6 +50,7 @@ export default function App() {
         }
         isCapturingRef.current = false;
         setIsCapturing(false);
+        setCaptureStatus({ state: "idle" });
         booth.setCountdown(null);
     };
 
@@ -54,6 +59,11 @@ export default function App() {
             cancelCaptureSequence();
             return;
         }
+
+        setCaptureStatus({
+            state: "taking",
+            photoIndex,
+        });
 
         let value = booth.countdownSeconds;
         booth.setCountdown(value);
@@ -76,6 +86,11 @@ export default function App() {
                     slot.camera.width,
                     slot.camera.height,
                 );
+
+                setCaptureStatus({
+                    state: "captured",
+                    photoIndex,
+                });
 
                 booth.setPhotos((prev) => {
                     const next = [...prev];
@@ -199,6 +214,7 @@ export default function App() {
                         error={camera.error}
                         isStarting={camera.isStarting}
                         isCapturing={isCapturing}
+                        captureStatus={captureStatus}
                         onSwitch={switchCamera}
                         onCapture={takePhoto}
                         onRetry={camera.startCamera}
