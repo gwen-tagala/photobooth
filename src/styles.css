@@ -162,7 +162,7 @@ h1 span {
     justify-content: center;
     gap: clamp(12px, 2vh, 22px);
 }
-.camera-top {
+/* .camera-top {
     width: min(100%, 500px);
     display: flex;
     justify-content: space-between;
@@ -172,6 +172,19 @@ h1 span {
 .camera-label {
     font: 500 11px "DM Mono";
     letter-spacing: 0.12em;
+} */
+.camera-top {
+    width: min(100%, 500px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+.camera-label {
+    font: 500 11px "DM Mono";
+    letter-spacing: 0.12em;
+    text-align: right;
+    white-space: nowrap;
 }
 .camera-stage {
     width: min(100%, 500px);
@@ -649,15 +662,34 @@ h1 span {
     .landing-card {
         padding: 45px 25px;
     }
+    .stamp {
+        right: 12px;
+        top: 15px;
+        font-size: 8px;
+        padding: 4px 6px;
+    }
     .camera-stage {
         width: 100%;
     }
     .camera-top {
+        gap: 8px;
+    }
+    .camera-top .eyebrow {
+        font-size: 10px;
+        letter-spacing: 0.12em;
+    }
+    .camera-label {
+        font-size: 8px;
+        letter-spacing: 0.06em;
+    }
+    /* .camera-top {
         margin: 0;
     }
     .camera-label {
-        display: none;
-    }
+        display: block;
+        font-size: 9px;
+        letter-spacing: 0.08em;
+    } */
     .photo-progress {
         margin: 0;
     }
@@ -683,11 +715,5 @@ h1 span {
     }
     .frame-option {
         padding: 14px;
-    }
-    .stamp {
-        right: 14px;
-        top: 14px;
-        font-size: 9px;
-        padding: 5px 6px;
     }
 }

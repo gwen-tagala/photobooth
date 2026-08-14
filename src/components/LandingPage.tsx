@@ -17,7 +17,7 @@ export function LandingPage({ onStart }: Props) {
                 <p className="copy">
                     Take 4 photos.
                     <br />
-                    Choose your frame.
+                    Review your shots.
                     <br />
                     Save your photostrip.
                 </p>
