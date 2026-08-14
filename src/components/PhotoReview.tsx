@@ -26,7 +26,7 @@ export function PhotoReview({ photos, frame, onRetake, onContinue }: Props) {
                         <div
                             className="review-photo-preview"
                             style={{
-                                aspectRatio: `${frame.photoSlots[index].width} / ${frame.photoSlots[index].height}`,
+                                aspectRatio: `${frame.photoSlots[index].review.width} / ${frame.photoSlots[index].review.height}`,
                             }}
                         >
                             <img
@@ -37,9 +37,9 @@ export function PhotoReview({ photos, frame, onRetake, onContinue }: Props) {
                                 className="review-frame-overlay"
                                 src={frame.image}
                                 style={{
-                                    width: `${(frame.width / frame.photoSlots[index].width) * 100}%`,
-                                    left: `${(-frame.photoSlots[index].x / frame.photoSlots[index].width) * 100}%`,
-                                    top: `${(-frame.photoSlots[index].y / frame.photoSlots[index].width) * 100}%`,
+                                    width: `${(frame.width / frame.photoSlots[index].review.width) * 100}%`,
+                                    left: `${(-frame.photoSlots[index].review.x / frame.photoSlots[index].review.width) * 100}%`,
+                                    top: `${(-frame.photoSlots[index].review.y / frame.photoSlots[index].review.width) * 100}%`,
                                 }}
                                 alt=""
                                 aria-hidden="true"

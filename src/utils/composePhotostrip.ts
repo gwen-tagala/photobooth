@@ -1,4 +1,8 @@
-import type { CapturedPhoto, PhotoFrame, PhotoSlot } from "../types/photobooth";
+import type {
+    CapturedPhoto,
+    ComposePhotostripOptions,
+    PhotoFrame,
+} from "../types/photobooth";
 import { loadImage } from "./loadImage";
 
 function parseObjectPosition(value = "50% 50%") {
@@ -16,17 +20,22 @@ function parseObjectPosition(value = "50% 50%") {
 function drawCover(
     ctx: CanvasRenderingContext2D,
     image: HTMLImageElement,
-    slot: PhotoSlot,
+    slot: ComposePhotostripOptions,
+    objectPosition?: string,
 ) {
     const scale = Math.max(
         slot.width / image.naturalWidth,
         slot.height / image.naturalHeight,
     );
+
     const drawWidth = image.naturalWidth * scale;
     const drawHeight = image.naturalHeight * scale;
-    const position = parseObjectPosition(slot.objectPosition);
+
+    const position = parseObjectPosition(objectPosition);
+
     const x = slot.x + (slot.width - drawWidth) * position.x;
     const y = slot.y + (slot.height - drawHeight) * position.y;
+
     ctx.drawImage(image, x, y, drawWidth, drawHeight);
 }
 
@@ -57,9 +66,11 @@ export async function composePhotostrip(
     const frameImage = await loadImage(frame.image);
 
     ctx.clearRect(0, 0, frame.width, frame.height);
-    frame.photoSlots.forEach((slot, index) =>
-        drawCover(ctx, photoImages[index], slot),
-    );
+
+    frame.photoSlots.forEach((slot, index) => {
+        drawCover(ctx, photoImages[index], slot.compose, slot.objectPosition);
+    });
+
     ctx.drawImage(frameImage, 0, 0, frame.width, frame.height);
 
     return canvas.toDataURL("image/png");

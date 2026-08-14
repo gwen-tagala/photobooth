@@ -28,11 +28,14 @@ interface Props {
 export function CameraView(props: Props) {
     const mirrored = props.cameraMode === "user";
     const slot = props.frame.photoSlots[props.activeSlotIndex];
+    const cameraSlot = slot.camera;
+
     const overlayStyle = {
-        width: `${(props.frame.width / slot.width) * 100}%`,
-        left: `${(-slot.x / slot.width) * 100}%`,
-        top: `${(-slot.y / slot.width) * 100}%`,
+        width: `${(props.frame.width / cameraSlot.width) * 100}%`,
+        left: `${(-cameraSlot.x / cameraSlot.width) * 100}%`,
+        top: `${(-cameraSlot.y / cameraSlot.width) * 100}%`,
     };
+
     return (
         <main className="camera-page page-shell">
             <div className="camera-top">
@@ -42,7 +45,9 @@ export function CameraView(props: Props) {
 
             <div
                 className="camera-stage"
-                style={{ aspectRatio: `${slot.width} / ${slot.height}` }}
+                style={{
+                    aspectRatio: `${cameraSlot.width} / ${cameraSlot.height}`,
+                }}
             >
                 {props.error ? (
                     <div className="camera-error">
@@ -76,10 +81,10 @@ export function CameraView(props: Props) {
                         aria-hidden="true"
                     />
                 )}
-                <div className="viewfinder-corner tl" />
+                {/* <div className="viewfinder-corner tl" />
                 <div className="viewfinder-corner tr" />
                 <div className="viewfinder-corner bl" />
-                <div className="viewfinder-corner br" />
+                <div className="viewfinder-corner br" /> */}
                 <Countdown value={props.countdown} />
                 <div className="flash" />
             </div>
@@ -88,7 +93,7 @@ export function CameraView(props: Props) {
                 current={props.currentPhotoIndex}
                 photos={props.photoCount}
             />
-            <div className="slot-check" aria-label="Slot alignment check">
+            {/* <div className="slot-check" aria-label="Slot alignment check">
                 <span>SLOT CHECK</span>
                 {[0, 1, 2, 3].map((index) => (
                     <button
@@ -104,7 +109,7 @@ export function CameraView(props: Props) {
                         {index + 1}
                     </button>
                 ))}
-            </div>
+            </div> */}
             <div className="countdown-settings" aria-label="Countdown timer">
                 <span>TIMER</span>
                 {[3, 5, 10].map((seconds) => (

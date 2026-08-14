@@ -453,10 +453,10 @@ h1 span {
 }
 .review-grid {
     display: grid;
-    grid-template-columns: minmax(0, 560px);
+    grid-template-columns: minmax(0, 500px);
     gap: 15px;
     justify-content: center;
-    max-width: 600px;
+    max-width: 500px;
     margin: 0 auto;
 }
 .review-card {

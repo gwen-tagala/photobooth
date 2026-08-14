@@ -44,7 +44,6 @@ export function FrameSelector({
                             onClick={() => onSelect(frame)}
                         >
                             <span>{frame.name}</span>
-                            <small>682 × 2048</small>
                         </button>
                     ))}
                 </div>
