@@ -1,3 +1,5 @@
+import { ArrowRight } from "lucide-react";
+
 interface Props {
     onStart: () => void;
 }
@@ -22,7 +24,8 @@ export function LandingPage({ onStart }: Props) {
                     Save your photostrip.
                 </p>
                 <button className="primary-button" onClick={onStart}>
-                    START PHOTOBOOTH <span>→</span>
+                    START PHOTOBOOTH
+                    <ArrowRight className="button-icon" />
                 </button>
                 <div className="scribble">made for Jisung ♡</div>
             </div>

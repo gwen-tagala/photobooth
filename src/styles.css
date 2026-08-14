@@ -140,6 +140,11 @@ h1 span {
     transition:
         0.18s transform,
         0.18s box-shadow;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    white-space: nowrap;
 }
 .primary-button:hover {
     transform: translate(-2px, -2px);
@@ -151,8 +156,19 @@ h1 span {
 }
 .primary-button.wide {
     width: min(100%, 540px);
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin: 30px auto 0;
+}
+.button-icon {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2.5;
+    margin-left: 7px;
+    /* vertical-align: middle; */
+    margin-left: 0;
+    flex-shrink: 0;
 }
 .camera-page {
     max-width: 760px;
@@ -343,23 +359,34 @@ h1 span {
     opacity: 0.4;
 }
 .camera-switch-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
     width: auto;
     height: auto;
     padding: 4px 8px;
+
     border: 0;
     background: transparent;
     color: var(--navy);
     box-shadow: none;
+
     font: 500 10px "DM Mono";
     letter-spacing: 0.08em;
 }
-
 .camera-switch-button:hover {
     transform: none;
     box-shadow: none;
 }
 .camera-switch-button::after {
     content: none;
+}
+.camera-switch-icon {
+    width: 17px;
+    height: 17px;
+    stroke-width: 2.2;
 }
 .shutter {
     width: 76px;
@@ -518,6 +545,17 @@ h1 span {
     font: 500 10px "DM Mono";
     padding: 10px;
     margin-top: 7px;
+}
+.retake-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+.retake-button .button-icon {
+    width: 12px;
+    height: 12px;
+    margin-left: 0;
 }
 .frame-layout {
     display: grid;

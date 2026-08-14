@@ -1,5 +1,5 @@
 import type { CapturedPhoto, PhotoFrame } from "../types/photobooth";
-
+import { ArrowRight, RotateCcw } from "lucide-react";
 interface Props {
     photos: CapturedPhoto[];
     frame: PhotoFrame;
@@ -51,13 +51,15 @@ export function PhotoReview({ photos, frame, onRetake, onContinue }: Props) {
                             className="retake-button"
                             onClick={() => onRetake(index)}
                         >
-                            RETAKE ↻
+                            RETAKE
+                            <RotateCcw className="button-icon" />
                         </button>
                     </article>
                 ))}
             </div>
             <button className="primary-button wide" onClick={onContinue}>
-                VIEW RESULT →
+                VIEW RESULT
+                <ArrowRight className="button-icon" />
             </button>
         </main>
     );

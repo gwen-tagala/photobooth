@@ -1,3 +1,4 @@
+import { Download } from "lucide-react";
 import { PhotostripPreview } from "./PhotostripPreview";
 
 interface Props {
@@ -26,6 +27,7 @@ export function ResultScreen({ image, onDownload, onReset }: Props) {
                     disabled={!image}
                 >
                     SAVE PHOTO STRIP
+                    <Download className="button-icon" />
                 </button>
                 <button className="text-button" onClick={onReset}>
                     START AGAIN
