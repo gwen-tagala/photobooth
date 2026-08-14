@@ -151,7 +151,8 @@ h1 span {
 }
 .primary-button.wide {
     width: min(100%, 540px);
-    margin-top: 30px;
+    display: block;
+    margin: 30px auto 0;
 }
 .camera-page {
     max-width: 760px;
