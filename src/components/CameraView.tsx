@@ -141,9 +141,7 @@ export function CameraView(props: Props) {
                     !!props.error
                 }
             />
-            <p className="camera-hint">
-                Choose a timer, then take your four photos.
-            </p>
+            <p className="camera-hint">Choose a timer then take your photos.</p>
         </main>
     );
 }

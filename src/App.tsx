@@ -26,6 +26,7 @@ export default function App() {
     );
     const captureTimeout = useRef<number | null>(null);
     const isCapturingRef = useRef(false);
+    const retakeIndexRef = useRef<number | null>(null);
 
     const start = async () => {
         booth.setStep("camera");
@@ -53,24 +54,22 @@ export default function App() {
             cancelCaptureSequence();
             return;
         }
+
         let value = booth.countdownSeconds;
         booth.setCountdown(value);
+
         const timer = window.setInterval(() => {
             value -= 1;
-            if (value > 0) booth.setCountdown(value);
-            else {
+
+            if (value > 0) {
+                booth.setCountdown(value);
+            } else {
                 window.clearInterval(timer);
                 booth.setCountdown(null);
                 setFlash(true);
                 window.setTimeout(() => setFlash(false), 180);
 
-                // const dataUrl = captureVideoFrame(
-                //     camera.videoRef.current!,
-                //     booth.cameraMode === "user",
-                // );
-
                 const slot = booth.selectedFrame.photoSlots[photoIndex];
-
                 const dataUrl = captureVideoFrame(
                     camera.videoRef.current!,
                     booth.cameraMode === "user",
@@ -87,13 +86,35 @@ export default function App() {
                     return next;
                 });
 
-                if (photoIndex < 3) {
+                // if (photoIndex < 3) {
+                //     booth.setCurrentPhotoIndex(photoIndex + 1);
+                //     captureTimeout.current = window.setTimeout(
+                //         () => captureNextPhoto(photoIndex + 1),
+                //         700,
+                //     );
+                // } else {
+                //     camera.stopCamera();
+                //     booth.setStep("review");
+                //     isCapturingRef.current = false;
+                //     setIsCapturing(false);
+                // }
+
+                if (retakeIndexRef.current !== null) {
+                    // Retake only this photo, then return to review.
+                    retakeIndexRef.current = null;
+                    camera.stopCamera();
+                    booth.setStep("review");
+                    isCapturingRef.current = false;
+                    setIsCapturing(false);
+                } else if (photoIndex < 3) {
+                    // Normal 4-photo sequence.
                     booth.setCurrentPhotoIndex(photoIndex + 1);
                     captureTimeout.current = window.setTimeout(
                         () => captureNextPhoto(photoIndex + 1),
                         700,
                     );
                 } else {
+                    // Finished all 4 photos.
                     camera.stopCamera();
                     booth.setStep("review");
                     isCapturingRef.current = false;
@@ -118,7 +139,8 @@ export default function App() {
         return cancelCaptureSequence;
     }, [booth.step, booth.cameraMode]);
 
-    const retake = async (index: number) => {
+    const retake = (index: number) => {
+        retakeIndexRef.current = index;
         setPreviewSlotIndex(null);
         booth.setCurrentPhotoIndex(index);
         booth.setStep("camera");
