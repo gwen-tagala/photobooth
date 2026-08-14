@@ -72,6 +72,7 @@ export function CameraView(props: Props) {
                         aria-label="Camera preview"
                     />
                 )}
+
                 {!props.error && props.frame.showCameraOverlay && (
                     <img
                         className="camera-frame-overlay"
@@ -81,10 +82,12 @@ export function CameraView(props: Props) {
                         aria-hidden="true"
                     />
                 )}
+
                 {/* <div className="viewfinder-corner tl" />
                 <div className="viewfinder-corner tr" />
                 <div className="viewfinder-corner bl" />
                 <div className="viewfinder-corner br" /> */}
+
                 <Countdown value={props.countdown} />
                 <div className="flash" />
             </div>
@@ -93,6 +96,7 @@ export function CameraView(props: Props) {
                 current={props.currentPhotoIndex}
                 photos={props.photoCount}
             />
+
             {/* <div className="slot-check" aria-label="Slot alignment check">
                 <span>SLOT CHECK</span>
                 {[0, 1, 2, 3].map((index) => (
@@ -110,38 +114,51 @@ export function CameraView(props: Props) {
                     </button>
                 ))}
             </div> */}
-            <div className="countdown-settings" aria-label="Countdown timer">
-                <span>TIMER</span>
-                {[3, 5, 10].map((seconds) => (
-                    <button
-                        key={seconds}
-                        className={
-                            props.countdownSeconds === seconds
-                                ? "timer-option is-selected"
-                                : "timer-option"
-                        }
-                        onClick={() =>
-                            props.onCountdownSecondsChange(
-                                seconds as CountdownSeconds,
-                            )
-                        }
-                        disabled={props.countdown !== null || props.isCapturing}
-                    >
-                        {seconds}S
-                    </button>
-                ))}
+
+            <div className="camera-bottom-controls">
+                <div
+                    className="countdown-settings"
+                    aria-label="Countdown timer"
+                >
+                    <span>TIMER</span>
+
+                    {[3, 5, 10].map((seconds) => (
+                        <button
+                            key={seconds}
+                            className={
+                                props.countdownSeconds === seconds
+                                    ? "timer-option is-selected"
+                                    : "timer-option"
+                            }
+                            onClick={() =>
+                                props.onCountdownSecondsChange(
+                                    seconds as CountdownSeconds,
+                                )
+                            }
+                            disabled={
+                                props.countdown !== null || props.isCapturing
+                            }
+                        >
+                            {seconds}S
+                        </button>
+                    ))}
+                </div>
+
+                <CameraControls
+                    onSwitch={props.onSwitch}
+                    onCapture={props.onCapture}
+                    disabled={
+                        props.isStarting ||
+                        props.isCapturing ||
+                        props.countdown !== null ||
+                        !!props.error
+                    }
+                />
+
+                <p className="camera-hint">
+                    Choose a timer then take your photos.
+                </p>
             </div>
-            <CameraControls
-                onSwitch={props.onSwitch}
-                onCapture={props.onCapture}
-                disabled={
-                    props.isStarting ||
-                    props.isCapturing ||
-                    props.countdown !== null ||
-                    !!props.error
-                }
-            />
-            <p className="camera-hint">Choose a timer then take your photos.</p>
         </main>
     );
 }
