@@ -2,9 +2,10 @@ import { ArrowRight } from "lucide-react";
 
 interface Props {
     onStart: () => void;
+    onFindBooths: () => void;
 }
 
-export function LandingPage({ onStart }: Props) {
+export function LandingPage({ onStart, onFindBooths }: Props) {
     return (
         <main className="landing page-shell">
             <div className="landing-card paper-card">
@@ -26,6 +27,9 @@ export function LandingPage({ onStart }: Props) {
                 <button className="primary-button" onClick={onStart}>
                     START PHOTOBOOTH
                     <ArrowRight className="button-icon" />
+                </button>
+                <button className="find-booths-link" onClick={onFindBooths}>
+                    FIND AN OFFLINE PHOTOBOOTH <ArrowRight className="button-icon" />
                 </button>
                 <div className="scribble">made for Jisung ♡</div>
             </div>

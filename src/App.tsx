@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { CameraView } from "./components/CameraView";
 import { LandingPage } from "./components/LandingPage";
+import { OfflinePhotoboothsPage } from "./components/OfflinePhotoboothsPage";
 import { PhotoReview } from "./components/PhotoReview";
 import { ResultScreen } from "./components/ResultScreen";
 import { SingleCapture } from "./components/SingleCapture";
@@ -21,6 +22,7 @@ export default function App() {
     const booth = usePhotobooth(DEFAULT_FRAME);
     const camera = useCamera(booth.cameraMode);
     const [flash, setFlash] = useState(false);
+    const [showOffline, setShowOffline] = useState(false);
     const [isCapturing, setIsCapturing] = useState(false);
     const [captureStatus, setCaptureStatus] = useState<CaptureStatus>({
         state: "idle",
@@ -178,7 +180,11 @@ export default function App() {
     return (
         <>
             <div className={`app ${flash ? "is-flashing" : ""}`}>
-                {booth.step === "landing" && <LandingPage onStart={start} />}
+                {showOffline ? (
+                    <OfflinePhotoboothsPage onBack={() => setShowOffline(false)} />
+                ) : booth.step === "landing" && (
+                    <LandingPage onStart={start} onFindBooths={() => setShowOffline(true)} />
+                )}
                 {booth.step === "camera" && (
                     <CameraView
                         videoRef={camera.videoRef}
