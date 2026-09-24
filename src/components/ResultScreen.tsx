@@ -1,13 +1,15 @@
 import { Download } from "lucide-react";
+import type { PhotoFrame } from "../types/photobooth";
 import { PhotostripPreview } from "./PhotostripPreview";
 
 interface Props {
     image: string | null;
+    frame: PhotoFrame;
     onDownload: () => void;
     onReset: () => void;
 }
 
-export function ResultScreen({ image, onDownload, onReset }: Props) {
+export function ResultScreen({ image, frame, onDownload, onReset }: Props) {
     return (
         <main className="result-page page-shell">
             <div className="result-copy">
@@ -19,7 +21,7 @@ export function ResultScreen({ image, onDownload, onReset }: Props) {
                 </h2>
                 <p>Your photo strip is ready.</p>
             </div>
-            <PhotostripPreview image={image} />
+            <PhotostripPreview image={image} frame={frame} />
             <div className="result-actions">
                 <button
                     className="primary-button wide"

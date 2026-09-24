@@ -855,7 +855,6 @@ h1 span {
     box-shadow: 10px 10px 0 var(--red);
 }
 .preview-skeleton {
-    aspect-ratio: 1/3;
     display: flex;
     flex-direction: column;
     gap: 3%;

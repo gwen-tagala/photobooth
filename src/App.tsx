@@ -230,6 +230,7 @@ export default function App() {
                 {booth.step === "result" && (
                     <ResultScreen
                         image={booth.composite}
+                        frame={booth.selectedFrame}
                         onDownload={() =>
                             booth.composite &&
                             downloadImage(

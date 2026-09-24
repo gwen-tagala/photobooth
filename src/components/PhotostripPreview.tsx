@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import type { PhotoFrame } from "../types/photobooth";
 
 interface Props {
     image: string | null;
+    frame: PhotoFrame;
 }
 
-export function PhotostripPreview({ image }: Props) {
+export function PhotostripPreview({ image, frame }: Props) {
     const [minimumLoadingComplete, setMinimumLoadingComplete] = useState(false);
 
     useEffect(() => {
@@ -24,6 +26,12 @@ export function PhotostripPreview({ image }: Props) {
             ) : (
                 <div
                     className="preview-skeleton"
+                    style={{
+                        width: `${frame.width * 0.8}px`,
+                        maxWidth: "80%",
+                        aspectRatio: `${frame.width} / ${frame.height}`,
+                        marginInline: "auto",
+                    }}
                     aria-label="Composing photo strip"
                 >
                     <span />
