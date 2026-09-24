@@ -184,6 +184,7 @@ export default function App() {
                         videoRef={camera.videoRef}
                         cameraMode={booth.cameraMode}
                         frame={booth.selectedFrame}
+                        frames={frames}
                         countdown={booth.countdown}
                         countdownSeconds={booth.countdownSeconds}
                         currentPhotoIndex={booth.currentPhotoIndex}
@@ -203,6 +204,7 @@ export default function App() {
                         onPreviewSlotChange={() => undefined}
                         onCaptureModeChange={booth.setCaptureMode}
                         onShowCameraFrameChange={booth.setShowCameraFrame}
+                        onFrameChange={booth.setSelectedFrame}
                         isRetaking={isRetaking}
                     />
                 )}

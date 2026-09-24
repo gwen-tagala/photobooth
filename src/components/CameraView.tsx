@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { RefObject } from "react";
-import { Eye, EyeOff, SwitchCamera, Timer } from "lucide-react";
+import { Eye, EyeOff, X, SwitchCamera, Timer } from "lucide-react";
 import type { CountdownSeconds } from "../hooks/usePhotobooth";
 import type {
     CameraMode,
@@ -16,6 +16,7 @@ interface Props {
     videoRef: RefObject<HTMLVideoElement | null>;
     cameraMode: CameraMode;
     frame: PhotoFrame;
+    frames: PhotoFrame[];
     countdown: number | null;
     countdownSeconds: CountdownSeconds;
     currentPhotoIndex: number;
@@ -35,6 +36,7 @@ interface Props {
     onCaptureModeChange: (mode: CaptureMode) => void;
     showCameraFrame: boolean;
     onShowCameraFrameChange: (show: boolean) => void;
+    onFrameChange: (frame: PhotoFrame) => void;
     isRetaking: boolean;
 }
 
@@ -209,19 +211,59 @@ export function CameraView(props: Props) {
                             FRAME: {props.frame.name}
                         </button>
                         {isFrameSelectorOpen && (
-                            <div className="frame-selector-menu">
-                                <span className="frame-selector-label">
-                                    SELECT FRAME
-                                </span>
-                                <button
-                                    className="frame-option selected"
-                                    type="button"
-                                    onClick={() =>
-                                        setIsFrameSelectorOpen(false)
-                                    }
+                            <div
+                                className="frame-selector-backdrop"
+                                onClick={() => setIsFrameSelectorOpen(false)}
+                            >
+                                <div
+                                    className="frame-selector-popup"
+                                    role="dialog"
+                                    aria-modal="true"
+                                    aria-label={`${props.frame.name} frame preview`}
+                                    onClick={(event) => event.stopPropagation()}
                                 >
-                                    {props.frame.name}
-                                </button>
+                                    <button
+                                        className="frame-selector-close"
+                                        type="button"
+                                        onClick={() =>
+                                            setIsFrameSelectorOpen(false)
+                                        }
+                                        aria-label="Close frame preview"
+                                        title="Close frame preview"
+                                    >
+                                        <X />
+                                    </button>
+                                    <div className="frame-selector-options">
+                                        {props.frames.map((frame) => (
+                                            <button
+                                                key={frame.id}
+                                                className={`frame-selector-option ${frame.id === props.frame.id ? "is-selected" : ""}`}
+                                                type="button"
+                                                onClick={() => {
+                                                    props.onFrameChange(frame);
+                                                    setIsFrameSelectorOpen(
+                                                        false,
+                                                    );
+                                                }}
+                                                aria-label={`Select ${frame.name} frame`}
+                                                aria-pressed={
+                                                    frame.id === props.frame.id
+                                                }
+                                            >
+                                                <img
+                                                    className="frame-selector-preview"
+                                                    src={frame.image}
+                                                    style={{
+                                                        width: `${frame.width * 0.15}px`,
+                                                        height: `${frame.height * 0.15}px`,
+                                                    }}
+                                                    alt=""
+                                                    aria-hidden="true"
+                                                />
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
                             </div>
                         )}
                     </div>
