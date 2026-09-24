@@ -327,6 +327,12 @@ h1 span {
     align-items: center;
     gap: 14px;
 }
+.camera-bottom-controls.is-retaking {
+    grid-template-columns: 1fr;
+}
+.camera-bottom-controls.is-retaking .camera-controls {
+    justify-self: center;
+}
 
 .camera-top-controls {
     width: min(100%, 500px);

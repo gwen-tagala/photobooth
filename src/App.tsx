@@ -28,6 +28,7 @@ export default function App() {
     const [selectedRetakeIndex, setSelectedRetakeIndex] = useState<
         number | null
     >(null);
+    const [isRetaking, setIsRetaking] = useState(false);
     const [reviewComposite, setReviewComposite] = useState<string | null>(null);
     const captureTimeout = useRef<number | null>(null);
     const isCapturingRef = useRef(false);
@@ -59,12 +60,14 @@ export default function App() {
         booth.setPhotos(nextPhotos);
 
         if (booth.captureMode === "single") {
+            setIsRetaking(false);
             camera.stopCamera();
             booth.setStep("single-capture");
             return;
         }
         if (retakeIndexRef.current !== null || photoIndex === 3) {
             retakeIndexRef.current = null;
+            setIsRetaking(false);
             camera.stopCamera();
             setSelectedRetakeIndex(null);
             booth.setStep("burst-review");
@@ -121,6 +124,7 @@ export default function App() {
     const retakeBurstPhoto = () => {
         if (selectedRetakeIndex === null) return;
         retakeIndexRef.current = selectedRetakeIndex;
+        setIsRetaking(true);
         booth.setCurrentPhotoIndex(selectedRetakeIndex);
         booth.setStep("camera");
     };
@@ -133,6 +137,11 @@ export default function App() {
         }
     };
 
+    const retakeSinglePhoto = () => {
+        setIsRetaking(true);
+        booth.setStep("camera");
+    };
+
     const start = () => booth.setStep("camera");
     const switchCamera = () =>
         booth.setCameraMode(
@@ -142,6 +151,7 @@ export default function App() {
         cancelCaptureSequence();
         camera.stopCamera();
         setSelectedRetakeIndex(null);
+        setIsRetaking(false);
         setReviewComposite(null);
         photosRef.current = [];
         booth.reset();
@@ -189,6 +199,7 @@ export default function App() {
                         onPreviewSlotChange={() => undefined}
                         onCaptureModeChange={booth.setCaptureMode}
                         onShowCameraFrameChange={booth.setShowCameraFrame}
+                        isRetaking={isRetaking}
                     />
                 )}
                 {booth.step === "single-capture" && (
@@ -196,7 +207,7 @@ export default function App() {
                         photo={booth.photos[booth.currentPhotoIndex]}
                         index={booth.currentPhotoIndex}
                         frame={booth.selectedFrame}
-                        onRetake={() => booth.setStep("camera")}
+                        onRetake={retakeSinglePhoto}
                         onNext={nextSinglePhoto}
                         isLast={booth.currentPhotoIndex === 3}
                     />

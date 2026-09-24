@@ -35,6 +35,7 @@ interface Props {
     onCaptureModeChange: (mode: CaptureMode) => void;
     showCameraFrame: boolean;
     onShowCameraFrameChange: (show: boolean) => void;
+    isRetaking: boolean;
 }
 
 export function CameraView(props: Props) {
@@ -190,31 +191,39 @@ export function CameraView(props: Props) {
                 photos={props.photoCount}
             />
 
-            <div className="camera-bottom-controls">
-                <div className="frame-selector-control">
-                    <button
-                        className="control-button"
-                        type="button"
-                        onClick={() => setIsFrameSelectorOpen((open) => !open)}
-                        aria-expanded={isFrameSelectorOpen}
-                    >
-                        FRAME: {props.frame.name}
-                    </button>
-                    {isFrameSelectorOpen && (
-                        <div className="frame-selector-menu">
-                            <span className="frame-selector-label">
-                                SELECT FRAME
-                            </span>
-                            <button
-                                className="frame-option selected"
-                                type="button"
-                                onClick={() => setIsFrameSelectorOpen(false)}
-                            >
-                                {props.frame.name}
-                            </button>
-                        </div>
-                    )}
-                </div>
+            <div
+                className={`camera-bottom-controls ${props.isRetaking ? "is-retaking" : ""}`}
+            >
+                {!props.isRetaking && (
+                    <div className="frame-selector-control">
+                        <button
+                            className="control-button"
+                            type="button"
+                            onClick={() =>
+                                setIsFrameSelectorOpen((open) => !open)
+                            }
+                            aria-expanded={isFrameSelectorOpen}
+                        >
+                            FRAME: {props.frame.name}
+                        </button>
+                        {isFrameSelectorOpen && (
+                            <div className="frame-selector-menu">
+                                <span className="frame-selector-label">
+                                    SELECT FRAME
+                                </span>
+                                <button
+                                    className="frame-option selected"
+                                    type="button"
+                                    onClick={() =>
+                                        setIsFrameSelectorOpen(false)
+                                    }
+                                >
+                                    {props.frame.name}
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                )}
 
                 <CameraControls
                     onCapture={props.onCapture}
@@ -226,20 +235,23 @@ export function CameraView(props: Props) {
                     }
                 />
 
-                <div className="mode-controls" aria-label="Capture mode">
-                    {(["burst", "single"] as const).map((mode) => (
-                        <button
-                            key={mode}
-                            className={`mode-button ${props.captureMode === mode ? "is-selected" : ""}`}
-                            onClick={() => props.onCaptureModeChange(mode)}
-                            disabled={
-                                props.isCapturing || props.countdown !== null
-                            }
-                        >
-                            {mode.toUpperCase()}
-                        </button>
-                    ))}
-                </div>
+                {!props.isRetaking && (
+                    <div className="mode-controls" aria-label="Capture mode">
+                        {(["burst", "single"] as const).map((mode) => (
+                            <button
+                                key={mode}
+                                className={`mode-button ${props.captureMode === mode ? "is-selected" : ""}`}
+                                onClick={() => props.onCaptureModeChange(mode)}
+                                disabled={
+                                    props.isCapturing ||
+                                    props.countdown !== null
+                                }
+                            >
+                                {mode.toUpperCase()}
+                            </button>
+                        ))}
+                    </div>
+                )}
 
                 <p className="camera-hint">{cameraHint}</p>
             </div>
