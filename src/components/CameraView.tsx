@@ -43,6 +43,8 @@ export function CameraView(props: Props) {
     const [timerNotice, setTimerNotice] = useState<number | null>(null);
     const timerNoticeTimeout = useRef<number | null>(null);
     const mirrored = props.cameraMode === "user";
+    const sessionControlsHidden =
+        props.isRetaking || props.isCapturing || props.photoCount > 0;
     const slot = props.frame.photoSlots[props.activeSlotIndex];
     const cameraSlot = slot.camera;
 
@@ -57,7 +59,7 @@ export function CameraView(props: Props) {
             ? `Get ready for photo #${props.captureStatus.photoIndex + 1}...`
             : props.captureStatus.state === "captured"
               ? `Photo #${props.captureStatus.photoIndex + 1} acquired`
-              : "Ready when you are. Set your timer and let's go!";
+              : "Tap the shutter to take a photo";
     const cycleTimer = () => {
         const nextSeconds: CountdownSeconds =
             props.countdownSeconds === 3
@@ -192,9 +194,9 @@ export function CameraView(props: Props) {
             />
 
             <div
-                className={`camera-bottom-controls ${props.isRetaking ? "is-retaking" : ""}`}
+                className={`camera-bottom-controls ${sessionControlsHidden ? "is-retaking" : ""}`}
             >
-                {!props.isRetaking && (
+                {!sessionControlsHidden && (
                     <div className="frame-selector-control">
                         <button
                             className="control-button"
@@ -235,7 +237,7 @@ export function CameraView(props: Props) {
                     }
                 />
 
-                {!props.isRetaking && (
+                {!sessionControlsHidden && (
                     <div className="mode-controls" aria-label="Capture mode">
                         {(["burst", "single"] as const).map((mode) => (
                             <button

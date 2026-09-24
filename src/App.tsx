@@ -60,6 +60,8 @@ export default function App() {
         booth.setPhotos(nextPhotos);
 
         if (booth.captureMode === "single") {
+            isCapturingRef.current = false;
+            setIsCapturing(false);
             setIsRetaking(false);
             camera.stopCamera();
             booth.setStep("single-capture");
@@ -67,6 +69,8 @@ export default function App() {
         }
         if (retakeIndexRef.current !== null || photoIndex === 3) {
             retakeIndexRef.current = null;
+            isCapturingRef.current = false;
+            setIsCapturing(false);
             setIsRetaking(false);
             camera.stopCamera();
             setSelectedRetakeIndex(null);

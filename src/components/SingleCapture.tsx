@@ -48,7 +48,7 @@ export function SingleCapture({
                 )}
             </div>
             <div className="single-actions">
-                <button className="retake-button" onClick={onRetake}>
+                <button className="primary-button" onClick={onRetake}>
                     RETAKE
                     <RotateCcw className="button-icon" />
                 </button>
