@@ -396,15 +396,18 @@ h1 span {
     position: fixed;
     inset: 0;
     z-index: 5;
-    display: grid;
-    place-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100dvh;
     padding: 24px;
     background: rgba(23, 44, 76, 0.62);
 }
 .frame-selector-popup {
     position: relative;
     width: min(94vw, 780px);
-    max-height: 85vh;
+    max-height: calc(100dvh - 48px);
     overflow-y: auto;
     padding: 58px 24px 24px;
     background: var(--paper);
