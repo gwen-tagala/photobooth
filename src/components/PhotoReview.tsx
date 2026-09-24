@@ -6,7 +6,7 @@ interface Props {
     frame: PhotoFrame;
     image: string | null;
     selectedIndex: number | null;
-    onSelect: (index: number) => void;
+    onSelect: (index: number | null) => void;
     onRetake: () => void;
     onContinue: () => void;
 }
@@ -52,7 +52,9 @@ export function PhotoReview({
                                 width: `${(slot.width / frame.width) * 100}%`,
                                 height: `${(slot.height / frame.height) * 100}%`,
                             }}
-                            onClick={() => onSelect(index)}
+                            onClick={() =>
+                                onSelect(selectedIndex === index ? null : index)
+                            }
                             aria-label={`Select photo ${index + 1} for retake`}
                         >
                             <span>{index + 1}</span>
@@ -60,14 +62,14 @@ export function PhotoReview({
                     );
                 })}
             </div>
-            <div className="review-selection-label">
+            {/* <div className="review-selection-label">
                 {selectedIndex === null
                     ? "NO PHOTO SELECTED"
                     : `PHOTO ${selectedIndex + 1} SELECTED`}
-            </div>
+            </div> */}
             <div className="review-actions">
                 <button
-                    className="retake-button"
+                    className="primary-button wide"
                     onClick={onRetake}
                     disabled={selectedIndex === null}
                 >

@@ -774,10 +774,18 @@ h1 span {
     margin-left: 0;
 }
 .review-actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 7px;
-    margin-top: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    width: min(100%, 420px);
+    margin: 24px auto 0;
+}
+.review-actions .primary-button.wide {
+    width: auto;
+    min-width: 130px;
+    margin: 0;
 }
 .review-actions .retake-button {
     margin-top: 0;
