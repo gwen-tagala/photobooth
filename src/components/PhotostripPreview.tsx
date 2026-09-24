@@ -27,8 +27,8 @@ export function PhotostripPreview({ image, frame }: Props) {
                 <div
                     className="preview-skeleton"
                     style={{
-                        width: `${frame.width * 0.8}px`,
-                        maxWidth: "80%",
+                        width: `${frame.width * 0.75}px`,
+                        maxWidth: "75%",
                         aspectRatio: `${frame.width} / ${frame.height}`,
                         marginInline: "auto",
                     }}
