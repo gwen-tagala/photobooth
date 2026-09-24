@@ -260,6 +260,9 @@ export function CameraView(props: Props) {
                                                     alt=""
                                                     aria-hidden="true"
                                                 />
+                                                <span className="frame-selector-option-name">
+                                                    {frame.name}
+                                                </span>
                                             </button>
                                         ))}
                                     </div>

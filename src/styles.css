@@ -432,6 +432,13 @@ h1 span {
     border-color: var(--red);
     background: rgba(215, 55, 50, 0.12);
 }
+.frame-selector-option-name {
+    margin-top: 8px;
+    color: var(--navy);
+    font: 500 10px "DM Mono";
+    letter-spacing: 0.08em;
+    text-align: center;
+}
 .frame-selector-preview {
     display: block;
     max-width: 70vw;
