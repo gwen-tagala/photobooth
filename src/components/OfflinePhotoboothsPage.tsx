@@ -113,7 +113,9 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
                                 <select
                                     id="offline-country"
                                     value={country}
-                                    onChange={(event) => selectCountry(event.target.value)}
+                                    onChange={(event) =>
+                                        selectCountry(event.target.value)
+                                    }
                                 >
                                     <option value="">All Countries</option>
                                     {countries.map((item) => (
@@ -211,7 +213,20 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
                                         }
                                     >
                                         <span className="location-vendor">
-                                            {/* <i /> */}
+                                            {location.vendorLogo ? (
+                                                <img
+                                                    className="vendor-logo"
+                                                    src={location.vendorLogo}
+                                                    alt=""
+                                                />
+                                            ) : (
+                                                <span
+                                                    className="vendor-logo vendor-logo-placeholder"
+                                                    aria-hidden="true"
+                                                >
+                                                    {location.vendor.charAt(0)}
+                                                </span>
+                                            )}
                                             {location.vendor}
                                         </span>
                                         <strong className="location-branch">
@@ -282,10 +297,10 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
                 </div>
                 <VendorLegend vendors={vendors} />
             </section>
-            <p className="offline-footnote">
+            {/* <p className="offline-footnote">
                 Branch details will appear here once confirmed by participating
                 vendors.
-            </p>
+            </p> */}
         </main>
     );
 }

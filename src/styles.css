@@ -1504,6 +1504,21 @@ h1 span {
         0 0 0 2px #fff,
         0 0 0 3px var(--vendor-color);
 }
+.vendor-logo {
+    display: grid;
+    width: 22px;
+    height: 22px;
+    flex: 0 0 22px;
+    place-items: center;
+    border: 1px solid var(--vendor-color);
+    border-radius: 50%;
+    background: white;
+    color: var(--vendor-color);
+    object-fit: contain;
+}
+.vendor-logo-placeholder {
+    font: 700 11px "DM Mono";
+}
 .location-branch {
     display: block;
     margin-top: 10px;
@@ -1605,8 +1620,10 @@ h1 span {
     }
     .location-list {
         flex: initial;
-        max-height: none;
-        overflow: visible;
+        max-height: min(55svh, 520px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
     }
     .vendor-legend {
         gap: 12px;

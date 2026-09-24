@@ -46,7 +46,7 @@ export async function composePhotostrip(
 ): Promise<string> {
     if (photos.length !== 4 || frame.photoSlots.length !== 4) {
         throw new Error(
-            "A photostrip requires exactly four photos and four frame slots.",
+            "A photo strip requires exactly four photos and four frame slots.",
         );
     }
 

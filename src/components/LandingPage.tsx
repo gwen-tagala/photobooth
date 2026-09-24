@@ -22,14 +22,15 @@ export function LandingPage({ onStart, onFindBooths }: Props) {
                     <br />
                     Review your shots.
                     <br />
-                    Save your photostrip.
+                    Save your photo strip.
                 </p>
                 <button className="primary-button" onClick={onStart}>
                     START PHOTOBOOTH
                     <ArrowRight className="button-icon" />
                 </button>
                 <button className="find-booths-link" onClick={onFindBooths}>
-                    FIND AN OFFLINE PHOTOBOOTH <ArrowRight className="button-icon" />
+                    FIND AN OFFLINE PHOTOBOOTH{" "}
+                    <ArrowRight className="button-icon" />
                 </button>
                 <div className="scribble">made for Jisung ♡</div>
             </div>

@@ -13,6 +13,8 @@ export interface PhotoboothLocation {
     website?: string;
     instagram?: string;
     notes?: string;
+    vendorLogo?: string;
+    posterUrls?: string[];
 }
 
 function parseCsv(text: string): string[][] {
@@ -64,23 +66,38 @@ function loadLocations(csv: string): PhotoboothLocation[] {
         const branchName = column(row, "branchName");
 
         // Skip incomplete rows so one typo does not prevent the map from loading.
-        if (!id || !vendor || !country || !branchName || !Number.isFinite(latitude) || !Number.isFinite(longitude)) return [];
+        if (
+            !id ||
+            !vendor ||
+            !country ||
+            !branchName ||
+            !Number.isFinite(latitude) ||
+            !Number.isFinite(longitude)
+        )
+            return [];
 
         const optional = (name: string) => column(row, name) || undefined;
-        return [{
-            id,
-            vendor,
-            country,
-            branchName,
-            latitude,
-            longitude,
-            address: optional("address"),
-            operatingDates: optional("operatingDates"),
-            pricing: optional("pricing"),
-            website: optional("website"),
-            instagram: optional("instagram"),
-            notes: optional("notes"),
-        }];
+        return [
+            {
+                id,
+                vendor,
+                country,
+                branchName,
+                latitude,
+                longitude,
+                address: optional("address"),
+                operatingDates: optional("operatingDates"),
+                pricing: optional("pricing"),
+                vendorLogo: optional("vendorLogo"),
+                posterUrls: optional("posterUrls")
+                    ?.split("|")
+                    .map((url) => url.trim())
+                    .filter(Boolean),
+                website: optional("website"),
+                instagram: optional("instagram"),
+                notes: optional("notes"),
+            },
+        ];
     });
 }
 
