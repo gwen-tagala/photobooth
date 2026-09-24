@@ -1,19 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
-import { LandingPage } from "./components/LandingPage";
 import { CameraView } from "./components/CameraView";
+import { LandingPage } from "./components/LandingPage";
 import { PhotoReview } from "./components/PhotoReview";
-// import { FrameSelector } from "./components/FrameSelector";
 import { ResultScreen } from "./components/ResultScreen";
+import { SingleCapture } from "./components/SingleCapture";
 import { frames } from "./data/frames";
 import { useCamera } from "./hooks/useCamera";
 import { usePhotobooth } from "./hooks/usePhotobooth";
+import type { CaptureStatus } from "./types/photobooth";
 import { captureVideoFrame } from "./utils/capturePhoto";
 import { composePhotostrip } from "./utils/composePhotostrip";
 import { downloadImage } from "./utils/downloadImage";
 import "./styles.css";
-import { CaptureStatus } from "./types/photobooth";
 
 const DEFAULT_FRAME = frames[0];
 
@@ -25,27 +25,19 @@ export default function App() {
     const [captureStatus, setCaptureStatus] = useState<CaptureStatus>({
         state: "idle",
     });
-    const [previewSlotIndex, setPreviewSlotIndex] = useState<number | null>(
-        null,
-    );
+    const [selectedRetakeIndex, setSelectedRetakeIndex] = useState<
+        number | null
+    >(null);
+    const [reviewComposite, setReviewComposite] = useState<string | null>(null);
     const captureTimeout = useRef<number | null>(null);
     const isCapturingRef = useRef(false);
     const retakeIndexRef = useRef<number | null>(null);
-
-    const start = async () => {
-        booth.setStep("camera");
-    };
-
-    const switchCamera = async () => {
-        booth.setCameraMode(
-            booth.cameraMode === "user" ? "environment" : "user",
-        );
-    };
+    const photosRef = useRef(booth.photos);
 
     const cancelCaptureSequence = () => {
         if (captureTimeout.current !== null) {
-            window.clearInterval(captureTimeout.current);
             window.clearTimeout(captureTimeout.current);
+            window.clearInterval(captureTimeout.current);
             captureTimeout.current = null;
         }
         isCapturingRef.current = false;
@@ -54,98 +46,105 @@ export default function App() {
         booth.setCountdown(null);
     };
 
+    const showResult = async (photos = booth.photos) => {
+        const result = await composePhotostrip(photos, booth.selectedFrame, 2);
+        booth.setComposite(result);
+        booth.setStep("result");
+    };
+
+    const finishCapture = (photoIndex: number, dataUrl: string) => {
+        const nextPhotos = [...photosRef.current];
+        nextPhotos[photoIndex] = { id: photoIndex + 1, dataUrl };
+        photosRef.current = nextPhotos;
+        booth.setPhotos(nextPhotos);
+
+        if (booth.captureMode === "single") {
+            camera.stopCamera();
+            booth.setStep("single-capture");
+            return;
+        }
+        if (retakeIndexRef.current !== null || photoIndex === 3) {
+            retakeIndexRef.current = null;
+            camera.stopCamera();
+            setSelectedRetakeIndex(null);
+            booth.setStep("burst-review");
+            void composePhotostrip(nextPhotos, booth.selectedFrame, 2).then(
+                setReviewComposite,
+            );
+        } else {
+            booth.setCurrentPhotoIndex(photoIndex + 1);
+            captureTimeout.current = window.setTimeout(
+                () => captureNextPhoto(photoIndex + 1),
+                700,
+            );
+        }
+    };
+
     const captureNextPhoto = (photoIndex: number) => {
         if (!camera.videoRef.current) {
             cancelCaptureSequence();
             return;
         }
-
-        setCaptureStatus({
-            state: "taking",
-            photoIndex,
-        });
-
+        setCaptureStatus({ state: "taking", photoIndex });
         let value = booth.countdownSeconds;
         booth.setCountdown(value);
-
         const timer = window.setInterval(() => {
             value -= 1;
-
             if (value > 0) {
                 booth.setCountdown(value);
-            } else {
-                window.clearInterval(timer);
-                booth.setCountdown(null);
-                setFlash(true);
-                window.setTimeout(() => setFlash(false), 180);
-
-                const slot = booth.selectedFrame.photoSlots[photoIndex];
-                const dataUrl = captureVideoFrame(
-                    camera.videoRef.current!,
-                    booth.cameraMode === "user",
-                    slot.camera.width,
-                    slot.camera.height,
-                );
-
-                setCaptureStatus({
-                    state: "captured",
-                    photoIndex,
-                });
-
-                booth.setPhotos((prev) => {
-                    const next = [...prev];
-                    next[photoIndex] = {
-                        id: photoIndex + 1,
-                        dataUrl,
-                    };
-                    return next;
-                });
-
-                // if (photoIndex < 3) {
-                //     booth.setCurrentPhotoIndex(photoIndex + 1);
-                //     captureTimeout.current = window.setTimeout(
-                //         () => captureNextPhoto(photoIndex + 1),
-                //         700,
-                //     );
-                // } else {
-                //     camera.stopCamera();
-                //     booth.setStep("review");
-                //     isCapturingRef.current = false;
-                //     setIsCapturing(false);
-                // }
-
-                if (retakeIndexRef.current !== null) {
-                    // Retake only this photo, then return to review.
-                    retakeIndexRef.current = null;
-                    camera.stopCamera();
-                    booth.setStep("review");
-                    isCapturingRef.current = false;
-                    setIsCapturing(false);
-                } else if (photoIndex < 3) {
-                    // Normal 4-photo sequence.
-                    booth.setCurrentPhotoIndex(photoIndex + 1);
-                    captureTimeout.current = window.setTimeout(
-                        () => captureNextPhoto(photoIndex + 1),
-                        700,
-                    );
-                } else {
-                    // Finished all 4 photos.
-                    camera.stopCamera();
-                    booth.setStep("review");
-                    isCapturingRef.current = false;
-                    setIsCapturing(false);
-                }
+                return;
             }
+            window.clearInterval(timer);
+            booth.setCountdown(null);
+            setFlash(true);
+            window.setTimeout(() => setFlash(false), 180);
+            const slot = booth.selectedFrame.photoSlots[photoIndex];
+            const dataUrl = captureVideoFrame(
+                camera.videoRef.current!,
+                booth.cameraMode === "user",
+                slot.camera.width,
+                slot.camera.height,
+            );
+            setCaptureStatus({ state: "captured", photoIndex });
+            finishCapture(photoIndex, dataUrl);
         }, 1000);
         captureTimeout.current = timer;
     };
 
     const takePhoto = () => {
         if (isCapturingRef.current || !camera.videoRef.current) return;
-        setPreviewSlotIndex(null);
         isCapturingRef.current = true;
         setIsCapturing(true);
         captureNextPhoto(booth.currentPhotoIndex);
+    };
+
+    const retakeBurstPhoto = () => {
+        if (selectedRetakeIndex === null) return;
+        retakeIndexRef.current = selectedRetakeIndex;
+        booth.setCurrentPhotoIndex(selectedRetakeIndex);
+        booth.setStep("camera");
+    };
+
+    const nextSinglePhoto = () => {
+        if (booth.currentPhotoIndex === 3) void showResult();
+        else {
+            booth.setCurrentPhotoIndex(booth.currentPhotoIndex + 1);
+            booth.setStep("camera");
+        }
+    };
+
+    const start = () => booth.setStep("camera");
+    const switchCamera = () =>
+        booth.setCameraMode(
+            booth.cameraMode === "user" ? "environment" : "user",
+        );
+    const reset = () => {
+        cancelCaptureSequence();
+        camera.stopCamera();
+        setSelectedRetakeIndex(null);
+        setReviewComposite(null);
+        photosRef.current = [];
+        booth.reset();
     };
 
     useEffect(() => {
@@ -154,45 +153,13 @@ export default function App() {
         return cancelCaptureSequence;
     }, [booth.step, booth.cameraMode]);
 
-    const retake = (index: number) => {
-        retakeIndexRef.current = index;
-        setPreviewSlotIndex(null);
-        booth.setCurrentPhotoIndex(index);
-        booth.setStep("camera");
-    };
-
-    // const continueToFrame = async () => {
-    //     booth.setStep("frame-selection");
-    //     const result = await composePhotostrip(
-    //         booth.photos,
-    //         booth.selectedFrame,
-    //         2,
-    //     );
-    //     booth.setComposite(result);
-    // };
-
-    // const chooseFrame = async (frame: typeof DEFAULT_FRAME) => {
-    //     booth.setSelectedFrame(frame);
-    //     const result = await composePhotostrip(booth.photos, frame, 2);
-    //     booth.setComposite(result);
-    // };
-
-    const showResult = async () => {
-        const result = await composePhotostrip(
-            booth.photos,
-            booth.selectedFrame,
-            2,
-        );
-        booth.setComposite(result);
-        booth.setStep("result");
-    };
-
-    const reset = () => {
-        cancelCaptureSequence();
-        setPreviewSlotIndex(null);
-        camera.stopCamera();
-        booth.reset();
-    };
+    useEffect(() => {
+        if (booth.step === "burst-review" && booth.photos.length === 4) {
+            void composePhotostrip(booth.photos, booth.selectedFrame, 2).then(
+                setReviewComposite,
+            );
+        }
+    }, [booth.step, booth.photos, booth.selectedFrame]);
 
     return (
         <>
@@ -206,39 +173,45 @@ export default function App() {
                         countdown={booth.countdown}
                         countdownSeconds={booth.countdownSeconds}
                         currentPhotoIndex={booth.currentPhotoIndex}
-                        activeSlotIndex={
-                            previewSlotIndex ?? booth.currentPhotoIndex
-                        }
-                        previewSlotIndex={previewSlotIndex}
+                        activeSlotIndex={booth.currentPhotoIndex}
+                        previewSlotIndex={null}
                         photoCount={booth.photos.length}
                         error={camera.error}
                         isStarting={camera.isStarting}
                         isCapturing={isCapturing}
                         captureStatus={captureStatus}
+                        captureMode={booth.captureMode}
+                        showCameraFrame={booth.showCameraFrame}
                         onSwitch={switchCamera}
                         onCapture={takePhoto}
                         onRetry={camera.startCamera}
                         onCountdownSecondsChange={booth.setCountdownSeconds}
-                        onPreviewSlotChange={setPreviewSlotIndex}
+                        onPreviewSlotChange={() => undefined}
+                        onCaptureModeChange={booth.setCaptureMode}
+                        onShowCameraFrameChange={booth.setShowCameraFrame}
                     />
                 )}
-                {booth.step === "review" && (
+                {booth.step === "single-capture" && (
+                    <SingleCapture
+                        photo={booth.photos[booth.currentPhotoIndex]}
+                        index={booth.currentPhotoIndex}
+                        frame={booth.selectedFrame}
+                        onRetake={() => booth.setStep("camera")}
+                        onNext={nextSinglePhoto}
+                        isLast={booth.currentPhotoIndex === 3}
+                    />
+                )}
+                {booth.step === "burst-review" && (
                     <PhotoReview
                         photos={booth.photos}
                         frame={booth.selectedFrame}
-                        onRetake={retake}
-                        onContinue={showResult}
+                        image={reviewComposite}
+                        selectedIndex={selectedRetakeIndex}
+                        onSelect={setSelectedRetakeIndex}
+                        onRetake={retakeBurstPhoto}
+                        onContinue={() => void showResult()}
                     />
                 )}
-                {/* {booth.step === "frame-selection" && (
-                    <FrameSelector
-                        frames={frames}
-                        selected={booth.selectedFrame}
-                        onSelect={chooseFrame}
-                        onContinue={showResult}
-                        preview={booth.composite}
-                    />
-                )} */}
                 {booth.step === "result" && (
                     <ResultScreen
                         image={booth.composite}

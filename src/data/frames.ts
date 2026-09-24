@@ -13,8 +13,8 @@ export const frames: PhotoFrame[] = [
         image: "/frames/hot-nerd-theory.png",
         width: 840,
         height: 2520,
-        showCameraOverlay: false,
-        showReviewOverlay: false,
+        showCameraOverlay: true,
+        showReviewOverlay: true,
         photoSlots: [
             {
                 camera: {
