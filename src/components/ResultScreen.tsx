@@ -35,7 +35,11 @@ export function ResultScreen({ image, frame, onDownload, onReset }: Props) {
                     START AGAIN
                 </button>
             </div>
-            <p className="privacy-note">Your photos stay on this device.</p>
+            <p className="privacy-note">
+                Photos are only available during this session.
+                <br />
+                Save your photo strip before leaving.
+            </p>
         </main>
     );
 }

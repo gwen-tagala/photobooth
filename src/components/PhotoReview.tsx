@@ -38,7 +38,14 @@ export function PhotoReview({
                         alt="Composed HOT NERD THEORY photostrip"
                     />
                 ) : (
-                    <div className="preview-loading">COMPOSING...</div>
+                    <div className="preview-loading" role="status">
+                        COMPOSING
+                        <span className="loading-dots" aria-hidden="true">
+                            <i>.</i>
+                            <i>.</i>
+                            <i>.</i>
+                        </span>
+                    </div>
                 )}
                 {photos.map((_, index) => {
                     const slot = frame.photoSlots[index].compose;
