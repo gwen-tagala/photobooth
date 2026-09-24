@@ -33,9 +33,7 @@ export function ResultScreen({ image, onDownload, onReset }: Props) {
                     START AGAIN
                 </button>
             </div>
-            <p className="privacy-note">
-                Your photos stay on this device. Nothing is uploaded.
-            </p>
+            <p className="privacy-note">Your photos stay on this device.</p>
         </main>
     );
 }

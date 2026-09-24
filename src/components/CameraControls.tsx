@@ -1,12 +1,9 @@
-import { SwitchCamera } from "lucide-react";
-
 interface Props {
-    onSwitch: () => void;
     onCapture: () => void;
     disabled: boolean;
 }
 
-export function CameraControls({ onSwitch, onCapture, disabled }: Props) {
+export function CameraControls({ onCapture, disabled }: Props) {
     return (
         <div className="camera-controls">
             <button
@@ -16,16 +13,6 @@ export function CameraControls({ onSwitch, onCapture, disabled }: Props) {
                 aria-label="Take photo"
             >
                 <span />
-            </button>
-
-            <button
-                className="secondary-button camera-switch-button"
-                onClick={onSwitch}
-                disabled={disabled}
-                aria-label="Switch camera"
-            >
-                <SwitchCamera className="camera-switch-icon" />
-                <span>SWITCH CAMERA</span>
             </button>
         </div>
     );

@@ -1,7 +1,10 @@
+import { useEffect, useRef, useState } from "react";
 import type { RefObject } from "react";
+import { Eye, EyeOff, SwitchCamera, Timer } from "lucide-react";
 import type { CountdownSeconds } from "../hooks/usePhotobooth";
 import type {
     CameraMode,
+    CaptureMode,
     CaptureStatus,
     PhotoFrame,
 } from "../types/photobooth";
@@ -28,9 +31,17 @@ interface Props {
     onRetry: () => void;
     onCountdownSecondsChange: (seconds: CountdownSeconds) => void;
     onPreviewSlotChange: (index: number | null) => void;
+    captureMode: CaptureMode;
+    onCaptureModeChange: (mode: CaptureMode) => void;
+    showCameraFrame: boolean;
+    onShowCameraFrameChange: (show: boolean) => void;
+    isRetaking: boolean;
 }
 
 export function CameraView(props: Props) {
+    const [isFrameSelectorOpen, setIsFrameSelectorOpen] = useState(false);
+    const [timerNotice, setTimerNotice] = useState<number | null>(null);
+    const timerNoticeTimeout = useRef<number | null>(null);
     const mirrored = props.cameraMode === "user";
     const slot = props.frame.photoSlots[props.activeSlotIndex];
     const cameraSlot = slot.camera;
@@ -47,12 +58,81 @@ export function CameraView(props: Props) {
             : props.captureStatus.state === "captured"
               ? `Photo #${props.captureStatus.photoIndex + 1} acquired`
               : "Ready when you are. Set your timer and let's go!";
+    const cycleTimer = () => {
+        const nextSeconds: CountdownSeconds =
+            props.countdownSeconds === 3
+                ? 5
+                : props.countdownSeconds === 5
+                  ? 10
+                  : 3;
+        props.onCountdownSecondsChange(nextSeconds);
+        setTimerNotice(nextSeconds);
+        if (timerNoticeTimeout.current !== null) {
+            window.clearTimeout(timerNoticeTimeout.current);
+        }
+        timerNoticeTimeout.current = window.setTimeout(
+            () => setTimerNotice(null),
+            900,
+        );
+    };
+
+    useEffect(
+        () => () => {
+            if (timerNoticeTimeout.current !== null) {
+                window.clearTimeout(timerNoticeTimeout.current);
+            }
+        },
+        [],
+    );
 
     return (
         <main className="camera-page page-shell">
             <div className="camera-top">
                 <span className="eyebrow">HOT NERD THEORY</span>
                 <span className="camera-label">PHOTOBOOTH SESSION</span>
+            </div>
+
+            <div className="camera-top-controls">
+                <button
+                    className="control-button icon-control timer-control"
+                    onClick={cycleTimer}
+                    disabled={props.countdown !== null || props.isCapturing}
+                    aria-label={`Timer set to ${props.countdownSeconds} seconds. Tap to change.`}
+                    title={`Timer: ${props.countdownSeconds}s`}
+                >
+                    <Timer className="control-icon" />
+                    <span className="timer-indicator">
+                        {props.countdownSeconds}s
+                    </span>
+                </button>
+
+                <button
+                    className="control-button icon-control"
+                    onClick={props.onSwitch}
+                    disabled={props.countdown !== null || props.isCapturing}
+                    aria-label="Switch camera"
+                    title="Switch camera"
+                >
+                    <SwitchCamera className="control-icon" />
+                </button>
+
+                <button
+                    className={`control-button icon-control ${props.showCameraFrame ? "is-selected" : ""}`}
+                    onClick={() =>
+                        props.onShowCameraFrameChange(!props.showCameraFrame)
+                    }
+                    aria-label={
+                        props.showCameraFrame ? "Hide frame" : "Show frame"
+                    }
+                    aria-pressed={props.showCameraFrame}
+                    title={props.showCameraFrame ? "Hide frame" : "Show frame"}
+                >
+                    {props.showCameraFrame ? (
+                        <Eye className="control-icon" />
+                    ) : (
+                        <EyeOff className="control-icon" />
+                    )}
+                </button>
             </div>
 
             <div
@@ -85,22 +165,24 @@ export function CameraView(props: Props) {
                     />
                 )}
 
-                {!props.error && props.frame.showCameraOverlay && (
-                    <img
-                        className="camera-frame-overlay"
-                        src={props.frame.image}
-                        style={overlayStyle}
-                        alt=""
-                        aria-hidden="true"
-                    />
-                )}
-
-                {/* <div className="viewfinder-corner tl" />
-                <div className="viewfinder-corner tr" />
-                <div className="viewfinder-corner bl" />
-                <div className="viewfinder-corner br" /> */}
+                {!props.error &&
+                    props.showCameraFrame &&
+                    props.frame.showCameraOverlay && (
+                        <img
+                            className="camera-frame-overlay"
+                            src={props.frame.image}
+                            style={overlayStyle}
+                            alt=""
+                            aria-hidden="true"
+                        />
+                    )}
 
                 <Countdown value={props.countdown} />
+                {timerNotice !== null && (
+                    <div className="timer-notice" aria-live="polite">
+                        {timerNotice}s
+                    </div>
+                )}
                 <div className="flash" />
             </div>
 
@@ -109,55 +191,41 @@ export function CameraView(props: Props) {
                 photos={props.photoCount}
             />
 
-            {/* <div className="slot-check" aria-label="Slot alignment check">
-                <span>SLOT CHECK</span>
-                {[0, 1, 2, 3].map((index) => (
-                    <button
-                        key={index}
-                        className={
-                            props.activeSlotIndex === index
-                                ? "slot-check-option is-selected"
-                                : "slot-check-option"
-                        }
-                        onClick={() => props.onPreviewSlotChange(index)}
-                        disabled={props.countdown !== null || props.isCapturing}
-                    >
-                        {index + 1}
-                    </button>
-                ))}
-            </div> */}
-
-            <div className="camera-bottom-controls">
-                <div
-                    className="countdown-settings"
-                    aria-label="Countdown timer"
-                >
-                    <span>TIMER</span>
-
-                    {[3, 5, 10].map((seconds) => (
+            <div
+                className={`camera-bottom-controls ${props.isRetaking ? "is-retaking" : ""}`}
+            >
+                {!props.isRetaking && (
+                    <div className="frame-selector-control">
                         <button
-                            key={seconds}
-                            className={
-                                props.countdownSeconds === seconds
-                                    ? "timer-option is-selected"
-                                    : "timer-option"
-                            }
+                            className="control-button"
+                            type="button"
                             onClick={() =>
-                                props.onCountdownSecondsChange(
-                                    seconds as CountdownSeconds,
-                                )
+                                setIsFrameSelectorOpen((open) => !open)
                             }
-                            disabled={
-                                props.countdown !== null || props.isCapturing
-                            }
+                            aria-expanded={isFrameSelectorOpen}
                         >
-                            {seconds}S
+                            FRAME: {props.frame.name}
                         </button>
-                    ))}
-                </div>
+                        {isFrameSelectorOpen && (
+                            <div className="frame-selector-menu">
+                                <span className="frame-selector-label">
+                                    SELECT FRAME
+                                </span>
+                                <button
+                                    className="frame-option selected"
+                                    type="button"
+                                    onClick={() =>
+                                        setIsFrameSelectorOpen(false)
+                                    }
+                                >
+                                    {props.frame.name}
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                )}
 
                 <CameraControls
-                    onSwitch={props.onSwitch}
                     onCapture={props.onCapture}
                     disabled={
                         props.isStarting ||
@@ -166,6 +234,24 @@ export function CameraView(props: Props) {
                         !!props.error
                     }
                 />
+
+                {!props.isRetaking && (
+                    <div className="mode-controls" aria-label="Capture mode">
+                        {(["burst", "single"] as const).map((mode) => (
+                            <button
+                                key={mode}
+                                className={`mode-button ${props.captureMode === mode ? "is-selected" : ""}`}
+                                onClick={() => props.onCaptureModeChange(mode)}
+                                disabled={
+                                    props.isCapturing ||
+                                    props.countdown !== null
+                                }
+                            >
+                                {mode.toUpperCase()}
+                            </button>
+                        ))}
+                    </div>
+                )}
 
                 <p className="camera-hint">{cameraHint}</p>
             </div>

@@ -1,10 +1,11 @@
 export type BoothStep =
     | "landing"
     | "camera"
-    | "review"
-    // | "frame-selection"
+    | "single-capture"
+    | "burst-review"
     | "result";
 export type CameraMode = "user" | "environment";
+export type CaptureMode = "burst" | "single";
 
 export type CaptureStatus =
     | { state: "idle" }
