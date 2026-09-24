@@ -662,7 +662,6 @@ h1 span {
     padding: 0;
     cursor: pointer;
 }
-.photo-region:hover,
 .photo-region.is-selected {
     border-color: var(--red);
     background: rgba(215, 55, 50, 0.16);
@@ -680,7 +679,6 @@ h1 span {
     font: 500 11px "DM Mono";
     opacity: 0;
 }
-.photo-region:hover span,
 .photo-region.is-selected span {
     opacity: 1;
 }

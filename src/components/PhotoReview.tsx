@@ -23,7 +23,7 @@ export function PhotoReview({
     return (
         <main className="review-page page-shell">
             <div className="section-heading">
-                <span className="eyebrow">BURST REVIEW</span>
+                <span className="eyebrow">PHOTO REVIEW</span>
                 <h2>
                     CHECK THE
                     <br />
