@@ -1,36 +1,52 @@
 import { photoboothLocations } from "./photoboothLocations";
 
-function hashVendorName(vendor: string) {
+function hashLocation(vendor: string, branchName: string) {
+    const value = `${vendor}::${branchName}`;
+
     let hash = 0;
-    for (let index = 0; index < vendor.length; index += 1) {
-        hash = (hash * 42 + vendor.charCodeAt(index)) >>> 0;
+
+    for (let index = 0; index < value.length; index += 1) {
+        hash = (hash * 31 + value.charCodeAt(index)) >>> 0;
     }
+
     return hash;
 }
 
-function createVendorColorMap(vendors: string[]) {
+function createLocationColorMap(locations: typeof photoboothLocations) {
     const colors: Record<string, string> = {};
     const usedHues = new Set<number>();
 
-    [...new Set(vendors)]
-        .sort((a, b) => a.localeCompare(b))
-        .forEach((vendor) => {
-            // Start from a stable position based on the vendor name, then move by
-            // the golden angle until this vendor has a color no other vendor uses.
-            let hue = hashVendorName(vendor) % 360;
-            while (usedHues.has(hue)) hue = (hue + 137) % 360;
-            usedHues.add(hue);
-            colors[vendor] = `hsl(${hue} 68% 42%)`;
-        });
+    locations.forEach((location) => {
+        const key = `${location.vendor}::${location.branchName}`;
+
+        let hue = hashLocation(location.vendor, location.branchName) % 360;
+
+        // Avoid colors that are too close to existing colors.
+        while (
+            [...usedHues].some(
+                (usedHue) =>
+                    Math.abs(hue - usedHue) < 25 ||
+                    Math.abs(hue - usedHue) > 335,
+            )
+        ) {
+            hue = (hue + 137) % 360;
+        }
+
+        usedHues.add(hue);
+
+        colors[key] = `hsl(${hue} 68% 42%)`;
+    });
 
     return colors;
 }
 
-// Generated directly from the vendors in photoboothLocations.csv. No manual
-// vendor-to-color entries are needed; every vendor keeps one color everywhere.
-export const vendorColors = createVendorColorMap(
-    photoboothLocations.map((location) => location.vendor),
-);
+export const locationColors = createLocationColorMap(photoboothLocations);
 
-export const getVendorColor = (vendor: string) =>
-    vendorColors[vendor] ?? `hsl(${hashVendorName(vendor) % 360} 68% 42%)`;
+export const getLocationColor = (vendor: string, branchName: string) => {
+    const key = `${vendor}::${branchName}`;
+
+    return (
+        locationColors[key] ??
+        `hsl(${hashLocation(vendor, branchName) % 360} 68% 42%)`
+    );
+};

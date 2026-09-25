@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import type { PhotoboothLocation } from "../data/photoboothLocations";
-import { getVendorColor } from "../data/vendorConfig";
+import { getLocationColor } from "../data/vendorConfig";
 
 interface Props {
     locations: PhotoboothLocation[];
@@ -89,7 +89,10 @@ export function PhotoboothMap({
         markerLayer.clearLayers();
         markersRef.current.clear();
         const markers = locations.map((location) => {
-            const color = getVendorColor(location.vendor);
+            const color = getLocationColor(
+                location.vendor,
+                location.branchName,
+            );
             const icon = L.divIcon({
                 className: "vendor-marker-shell",
                 html: `<span class="vendor-marker" style="--marker-color:${color}"></span>`,

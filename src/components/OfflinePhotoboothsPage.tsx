@@ -2,7 +2,7 @@ import { useMemo, useRef, useState, type CSSProperties } from "react";
 import { ArrowLeft, ChevronDown, ChevronRight, MapPin } from "lucide-react";
 import { PhotoboothMap } from "./PhotoboothMap";
 import { photoboothLocations } from "../data/photoboothLocations";
-import { getVendorColor } from "../data/vendorConfig";
+import { getLocationColor } from "../data/vendorConfig";
 
 interface Props {
     onBack: () => void;
@@ -87,8 +87,9 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
                         locations: parentLocations.filter(
                             (location) => location[childKey] === child,
                         ),
-                        color: getVendorColor(
+                        color: getLocationColor(
                             layerGroup === "country" ? child : parent,
+                            child,
                         ),
                     }));
                 return { name: parent, children, locations: parentLocations };
@@ -483,7 +484,10 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
             className={`location-card${selectedLocationId === location.id ? " is-active" : ""}`}
             style={
                 {
-                    "--vendor-color": getVendorColor(location.vendor),
+                    "--vendor-color": getLocationColor(
+                        location.vendor,
+                        location.branchName,
+                    ),
                 } as CSSProperties
             }
             onClick={() => selectLocation(location.id)}
