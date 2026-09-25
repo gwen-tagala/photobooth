@@ -3,7 +3,7 @@ import { photoboothLocations } from "./photoboothLocations";
 function hashVendorName(vendor: string) {
     let hash = 0;
     for (let index = 0; index < vendor.length; index += 1) {
-        hash = (hash * 60 + vendor.charCodeAt(index)) >>> 0;
+        hash = (hash * 42 + vendor.charCodeAt(index)) >>> 0;
     }
     return hash;
 }

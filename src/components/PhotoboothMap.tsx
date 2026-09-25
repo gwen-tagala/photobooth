@@ -24,6 +24,7 @@ const escapeHtml = (value: string) =>
     );
 
 function popupContent(location: PhotoboothLocation) {
+    // add the frames available for this location to the popup content
     const optionalLinks = [
         location.website &&
             `<a href="${escapeHtml(location.website)}" target="_blank" rel="noreferrer">WEBSITE ↗</a>`,

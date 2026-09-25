@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState, type CSSProperties } from "react";
 import { ArrowLeft, MapPin, X } from "lucide-react";
 import { PhotoboothMap } from "./PhotoboothMap";
-import { VendorLegend } from "./VendorLegend";
+// import { VendorLegend } from "./VendorLegend";
 import { photoboothLocations } from "../data/photoboothLocations";
 import { getVendorColor } from "../data/vendorConfig";
 
@@ -128,7 +128,7 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
                             <div className="filter-field">
                                 <div className="filter-label-row">
                                     <label htmlFor="offline-vendor">
-                                        PHOTOBOOTH VENDOR
+                                        PHOTOBOOTH
                                     </label>
                                     {vendor && (
                                         <button
@@ -163,11 +163,6 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
                                 {visibleLocations.length}{" "}
                                 {hasFilters ? "LOCATIONS FOUND" : "LOCATIONS"}
                             </strong>
-                            <span>
-                                {visibleLocations.length === 1
-                                    ? "1 BRANCH"
-                                    : `${visibleLocations.length} BRANCHES`}
-                            </span>
                         </div>
                         {visibleLocations.length > 0 ? (
                             <div className="location-list">
@@ -295,7 +290,7 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
                         )}
                     </div>
                 </div>
-                <VendorLegend vendors={vendors} />
+                {/* <VendorLegend vendors={vendors} /> */}
             </section>
             {/* <p className="offline-footnote">
                 Branch details will appear here once confirmed by participating
