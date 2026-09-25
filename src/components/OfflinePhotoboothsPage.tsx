@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState, type CSSProperties } from "react";
-import { ArrowLeft, MapPin, X } from "lucide-react";
+import { ArrowLeft, ChevronDown, ChevronRight, MapPin } from "lucide-react";
 import { PhotoboothMap } from "./PhotoboothMap";
 // import { VendorLegend } from "./VendorLegend";
 import { photoboothLocations } from "../data/photoboothLocations";
@@ -10,8 +10,16 @@ interface Props {
 }
 
 export function OfflinePhotoboothsPage({ onBack }: Props) {
-    const [country, setCountry] = useState("");
-    const [vendor, setVendor] = useState("");
+    const [layerGroup, setLayerGroup] = useState<"country" | "vendor">(
+        "country",
+    );
+    const [selectedCountries, setSelectedCountries] = useState<string[] | null>(
+        null,
+    );
+    const [selectedVendors, setSelectedVendors] = useState<string[] | null>(
+        null,
+    );
+    const [collapsedLayers, setCollapsedLayers] = useState<string[]>([]);
     const [selectedLocationId, setSelectedLocationId] = useState<string | null>(
         null,
     );
@@ -26,48 +34,74 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
         [],
     );
     const vendors = useMemo(
+        () => [...new Set(photoboothLocations.map((location) => location.vendor))].sort(),
+        [],
+    );
+    const layerItems = layerGroup === "country" ? countries : vendors;
+    const selectedLayers =
+        layerGroup === "country" ? selectedCountries : selectedVendors;
+    const layerTree = useMemo(
         () =>
-            [
-                ...new Set(
-                    photoboothLocations
-                        .filter(
-                            (location) =>
-                                !country || location.country === country,
-                        )
-                        .map((location) => location.vendor),
-                ),
-            ].sort(),
-        [country],
+            layerItems.map((parent) => {
+                const parentLocations = photoboothLocations.filter((location) =>
+                    layerGroup === "country"
+                        ? location.country === parent
+                        : location.vendor === parent,
+                );
+                const childKey = layerGroup === "country" ? "vendor" : "country";
+                const children = [...new Set(parentLocations.map((location) => location[childKey]))]
+                    .sort()
+                    .map((child) => ({
+                        name: child,
+                        count: parentLocations.filter((location) => location[childKey] === child).length,
+                        color: getVendorColor(
+                            layerGroup === "country" ? child : parent,
+                        ),
+                    }));
+                return { name: parent, children };
+            }),
+        [layerGroup, layerItems],
     );
     const visibleLocations = useMemo(
         () =>
             photoboothLocations.filter(
                 (location) =>
-                    (!country || location.country === country) &&
-                    (!vendor || location.vendor === vendor),
+                    selectedLayers === null ||
+                    selectedLayers.includes(
+                        layerGroup === "country"
+                            ? location.country
+                            : location.vendor,
+                    ),
             ),
-        [country, vendor],
+        [layerGroup, selectedLayers],
     );
-    const hasFilters = Boolean(country || vendor);
+    const hasFilters = selectedLayers !== null;
     const selectLocation = (id: string) => {
         setSelectedLocationId(id);
         cardRefs.current
             .get(id)
             ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     };
-    const selectCountry = (nextCountry: string) => {
-        setCountry(nextCountry);
-        if (
-            vendor &&
-            nextCountry &&
-            !photoboothLocations.some(
-                (location) =>
-                    location.country === nextCountry &&
-                    location.vendor === vendor,
-            )
-        ) {
-            setVendor("");
-        }
+    const toggleLayer = (item: string) => {
+        const setter = layerGroup === "country" ? setSelectedCountries : setSelectedVendors;
+        const next = selectedLayers === null
+            ? layerItems.filter((layer) => layer !== item)
+            : selectedLayers.includes(item)
+              ? selectedLayers.filter((layer) => layer !== item)
+              : [...selectedLayers, item];
+        setter(next);
+    };
+    const toggleAllLayers = () =>
+        (layerGroup === "country" ? setSelectedCountries : setSelectedVendors)(
+            selectedLayers === null ? [] : null,
+        );
+    const toggleLayerBranch = (layer: string) => {
+        const key = `${layerGroup}:${layer}`;
+        setCollapsedLayers((current) =>
+            current.includes(key)
+                ? current.filter((item) => item !== key)
+                : [...current, key],
+        );
     };
 
     return (
@@ -90,72 +124,67 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
                 <div className="offline-results-layout">
                     <aside
                         className="location-list-panel"
-                        aria-label="Photobooth filters and visible branches"
+                        aria-label="Photobooth layers and visible branches"
                     >
-                        <div className="offline-controls">
-                            <div className="filter-field">
-                                <div className="filter-label-row">
-                                    <label htmlFor="offline-country">
-                                        COUNTRY
-                                    </label>
-                                    {country && (
-                                        <button
-                                            className="filter-clear"
-                                            type="button"
-                                            onClick={() => selectCountry("")}
-                                            aria-label="Clear country filter"
-                                            title="Clear country filter"
-                                        >
-                                            <X aria-hidden="true" />
-                                        </button>
-                                    )}
-                                </div>
+                        <div className="layer-controls">
+                            <label className="layer-group-select" htmlFor="layer-group">
+                                SHOW LAYERS BY
                                 <select
-                                    id="offline-country"
-                                    value={country}
+                                    id="layer-group"
+                                    value={layerGroup}
                                     onChange={(event) =>
-                                        selectCountry(event.target.value)
+                                        setLayerGroup(event.target.value as "country" | "vendor")
                                     }
                                 >
-                                    <option value="">All Countries</option>
-                                    {countries.map((item) => (
-                                        <option key={item} value={item}>
-                                            {item}
-                                        </option>
-                                    ))}
+                                    <option value="country">Country</option>
+                                    <option value="vendor">Photobooth Vendor</option>
                                 </select>
-                            </div>
-                            <div className="filter-field">
-                                <div className="filter-label-row">
-                                    <label htmlFor="offline-vendor">
-                                        PHOTOBOOTH
-                                    </label>
-                                    {vendor && (
-                                        <button
-                                            className="filter-clear"
-                                            type="button"
-                                            onClick={() => setVendor("")}
-                                            aria-label="Clear vendor filter"
-                                            title="Clear vendor filter"
-                                        >
-                                            <X aria-hidden="true" />
-                                        </button>
-                                    )}
-                                </div>
-                                <select
-                                    id="offline-vendor"
-                                    value={vendor}
-                                    onChange={(event) =>
-                                        setVendor(event.target.value)
-                                    }
-                                >
-                                    <option value="">All Vendors</option>
-                                    {vendors.map((item) => (
-                                        <option key={item} value={item}>
-                                            {item}
-                                        </option>
-                                    ))}
-                                </select>
+                            </label>
+                            <div className="layer-tree">
+                                <label className="layer-option is-all">
+                                    <input type="checkbox" checked={selectedLayers === null} onChange={toggleAllLayers} />
+                                    ALL {layerGroup === "country" ? "COUNTRIES" : "VENDORS"}
+                                </label>
+                                {layerTree.map((layer) => {
+                                    const layerKey = `${layerGroup}:${layer.name}`;
+                                    const isCollapsed = collapsedLayers.includes(layerKey);
+                                    return (
+                                        <div className="layer-parent" key={layer.name}>
+                                            <div className="layer-parent-main">
+                                                <label className="layer-option">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={selectedLayers === null || selectedLayers.includes(layer.name)}
+                                                        onChange={() => toggleLayer(layer.name)}
+                                                    />
+                                                    {layer.name}
+                                                </label>
+                                                <button
+                                                    className="layer-branch-toggle"
+                                                    type="button"
+                                                    onClick={() => toggleLayerBranch(layer.name)}
+                                                    aria-expanded={!isCollapsed}
+                                                    aria-label={`${isCollapsed ? "Expand" : "Collapse"} ${layer.name}`}
+                                                >
+                                                    {isCollapsed ? <ChevronRight aria-hidden="true" /> : <ChevronDown aria-hidden="true" />}
+                                                </button>
+                                            </div>
+                                            {!isCollapsed && (
+                                                <div className="layer-children">
+                                                    <span className="layer-children-title">
+                                                        GROUPED BY {layerGroup === "country" ? "VENDOR" : "COUNTRY"}
+                                                    </span>
+                                                    {layer.children.map((child) => (
+                                                        <span className="layer-child" key={child.name}>
+                                                            <i style={{ backgroundColor: child.color }} />
+                                                            {child.name} <small>({child.count})</small>
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </div>
                         <div className="location-list-heading">

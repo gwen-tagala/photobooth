@@ -1397,6 +1397,104 @@ h1 span {
     margin: 0;
     border-bottom: 2px solid var(--navy);
 }
+.layer-controls {
+    padding: 13px;
+    border-bottom: 2px solid var(--navy);
+}
+.layer-group-select {
+    display: grid;
+    gap: 6px;
+    font: 500 9px "DM Mono";
+    letter-spacing: 0.1em;
+}
+.layer-group-select select {
+    width: 100%;
+    min-height: 38px;
+    padding: 7px 28px 7px 10px;
+    border: 2px solid var(--navy);
+    border-radius: 0;
+    background: var(--paper);
+    color: var(--navy);
+    font: 500 11px "DM Mono";
+}
+.layer-tree {
+    max-height: 190px;
+    margin-top: 11px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+.layer-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 26px;
+    padding: 4px 3px;
+    color: var(--navy);
+    cursor: pointer;
+    font: 500 10px "DM Mono";
+    line-height: 1.2;
+}
+.layer-option:hover { background: #efe6d4; }
+.layer-option.is-all {
+    padding-bottom: 8px;
+    border-bottom: 1px solid #172c4c35;
+    font-weight: 700;
+}
+.layer-parent { border-bottom: 1px solid #172c4c24; }
+.layer-parent-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.layer-parent-main .layer-option { flex: 1; }
+.layer-branch-toggle {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    padding: 4px;
+    border: 0;
+    background: transparent;
+    color: var(--navy);
+    cursor: pointer;
+}
+.layer-branch-toggle svg { width: 17px; height: 17px; }
+.layer-children {
+    display: grid;
+    gap: 5px;
+    margin: 0 8px 9px 11px;
+    padding: 7px 0 3px 14px;
+    border-left: 2px solid #426a9850;
+}
+.layer-children-title {
+    color: var(--blue);
+    font: 500 8px "DM Mono";
+    letter-spacing: 0.08em;
+}
+.layer-child {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    color: #40506b;
+    font-size: 12px;
+    line-height: 1.2;
+}
+.layer-child i {
+    width: 13px;
+    height: 13px;
+    flex: 0 0 13px;
+    border: 2px solid white;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px currentColor;
+}
+.layer-child small { color: #69758a; font: 500 10px "DM Mono"; }
+.layer-option input {
+    width: 15px;
+    height: 15px;
+    margin: 0;
+    accent-color: var(--red);
+}
 .filter-field {
     display: grid;
     gap: 6px;
