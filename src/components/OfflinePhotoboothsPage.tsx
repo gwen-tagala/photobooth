@@ -29,6 +29,7 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
         null,
     );
     const cardRefs = useRef(new Map<string, HTMLDivElement>());
+
     const countries = useMemo(
         () =>
             [
@@ -38,6 +39,7 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
             ].sort(),
         [],
     );
+
     const vendors = useMemo(
         () =>
             [
@@ -47,14 +49,19 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
             ].sort(),
         [],
     );
+
     const layerItems = layerGroup === "country" ? countries : vendors;
+
     const selectedLayers =
         layerGroup === "country" ? selectedCountries : selectedVendors;
+
     const selectedBranches =
         layerGroup === "country"
             ? selectedCountryBranches
             : selectedVendorBranches;
+
     const branchKey = (parent: string, child: string) => `${parent}:${child}`;
+
     const layerTree = useMemo(
         () =>
             layerItems.map((parent) => {
@@ -88,6 +95,20 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
             }),
         [layerGroup, layerItems],
     );
+
+    const allLayersSelected =
+        selectedLayers === null || selectedLayers.length === layerItems.length;
+
+    const allBranchesSelected =
+        selectedBranches === null ||
+        selectedBranches.length ===
+            layerTree.reduce(
+                (total, layer) => total + layer.children.length,
+                0,
+            );
+
+    const isAllSelected = allLayersSelected && allBranchesSelected;
+
     const visibleLocations = useMemo(
         () =>
             photoboothLocations.filter((location) => {
@@ -108,13 +129,14 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
             }),
         [layerGroup, selectedBranches, selectedLayers],
     );
-    const hasFilters = selectedLayers !== null;
+    const hasFilters = selectedLayers !== null || selectedBranches !== null;
     const selectLocation = (id: string) => {
         setSelectedLocationId(id);
         cardRefs.current
             .get(id)
             ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     };
+
     const toggleLayer = (item: string) => {
         const layerSetter =
             layerGroup === "country"
@@ -126,17 +148,24 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
                 ? setSelectedCountryBranches
                 : setSelectedVendorBranches;
 
+        const parentLayer = layerTree.find((layer) => layer.name === item);
+
+        const parentBranchKeys =
+            parentLayer?.children.map((child) => branchKey(item, child.name)) ??
+            [];
+
+        const allBranchKeys = layerTree.flatMap((layer) =>
+            layer.children.map((child) => branchKey(layer.name, child.name)),
+        );
+
         const parentIsSelected =
             selectedLayers === null || selectedLayers.includes(item);
 
-        // All child branches belonging to this parent
-        const parentBranchKeys =
-            layerTree
-                .find((layer) => layer.name === item)
-                ?.children.map((child) => branchKey(item, child.name)) ?? [];
-
         if (parentIsSelected) {
+            // ==========================================
             // UNCHECK PARENT
+            // ==========================================
+
             const nextLayers =
                 selectedLayers === null
                     ? layerItems.filter((layer) => layer !== item)
@@ -144,43 +173,49 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
 
             layerSetter(nextLayers);
 
-            // Also uncheck all children under this parent
+            // Also uncheck ALL children belonging to
+            // this parent.
             const nextBranches =
                 selectedBranches === null
-                    ? layerTree
-                          .flatMap((layer) =>
-                              layer.children.map((child) =>
-                                  branchKey(layer.name, child.name),
-                              ),
-                          )
-                          .filter((key) => !parentBranchKeys.includes(key))
+                    ? allBranchKeys.filter(
+                          (key) => !parentBranchKeys.includes(key),
+                      )
                     : selectedBranches.filter(
                           (key) => !parentBranchKeys.includes(key),
                       );
 
             branchSetter(nextBranches);
         } else {
+            // ==========================================
             // CHECK PARENT
+            // ==========================================
+
             const nextLayers =
-                selectedLayers === null ? null : [...selectedLayers, item];
+                selectedLayers === null
+                    ? null
+                    : [...new Set([...selectedLayers, item])];
 
-            layerSetter(nextLayers);
+            // If every parent is now selected,
+            // normalize to null = ALL.
+            if (
+                nextLayers === null ||
+                nextLayers.length === layerItems.length
+            ) {
+                layerSetter(null);
+            } else {
+                layerSetter(nextLayers);
+            }
 
-            // Also check all children under this parent
-            const allBranchKeys = layerTree.flatMap((layer) =>
-                layer.children.map((child) =>
-                    branchKey(layer.name, child.name),
-                ),
-            );
-
+            // Checking a parent checks ALL its children.
             const nextBranches =
                 selectedBranches === null
                     ? null
                     : [...new Set([...selectedBranches, ...parentBranchKeys])];
 
-            // If every branch is now selected, simplify back to null
+            // If every child across every parent is now
+            // selected, normalize to null = ALL.
             if (
-                nextBranches !== null &&
+                nextBranches === null ||
                 nextBranches.length === allBranchKeys.length
             ) {
                 branchSetter(null);
@@ -189,10 +224,35 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
             }
         }
     };
-    const toggleAllLayers = () =>
-        (layerGroup === "country" ? setSelectedCountries : setSelectedVendors)(
-            selectedLayers === null ? [] : null,
-        );
+
+    const toggleAllLayers = () => {
+        const layerSetter =
+            layerGroup === "country"
+                ? setSelectedCountries
+                : setSelectedVendors;
+
+        const branchSetter =
+            layerGroup === "country"
+                ? setSelectedCountryBranches
+                : setSelectedVendorBranches;
+
+        if (isAllSelected) {
+            // ==========================================
+            // UNCHECK ALL
+            // ==========================================
+
+            layerSetter([]);
+            branchSetter([]);
+        } else {
+            // ==========================================
+            // CHECK ALL
+            // ==========================================
+
+            layerSetter(null);
+            branchSetter(null);
+        }
+    };
+
     const toggleLayerBranch = (layer: string) => {
         const key = `${layerGroup}:${layer}`;
         setCollapsedLayers((current) =>
@@ -201,6 +261,7 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
                 : [...current, key],
         );
     };
+
     const toggleChildBranch = (parent: string, child: string) => {
         const key = `${layerGroup}:${parent}:${child}`;
         setCollapsedLayers((current) =>
@@ -209,23 +270,94 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
                 : [...current, key],
         );
     };
+
     const toggleChildLayer = (parent: string, child: string) => {
-        const setter =
+        const branchSetter =
             layerGroup === "country"
                 ? setSelectedCountryBranches
                 : setSelectedVendorBranches;
-        const allBranches = layerTree.flatMap((layer) =>
+
+        const layerSetter =
+            layerGroup === "country"
+                ? setSelectedCountries
+                : setSelectedVendors;
+
+        const key = branchKey(parent, child);
+
+        const allBranchKeys = layerTree.flatMap((layer) =>
             layer.children.map((item) => branchKey(layer.name, item.name)),
         );
-        const key = branchKey(parent, child);
-        const next =
-            selectedBranches === null
-                ? allBranches.filter((item) => item !== key)
-                : selectedBranches.includes(key)
-                  ? selectedBranches.filter((item) => item !== key)
-                  : [...selectedBranches, key];
-        setter(next);
+
+        const parentBranchKeys =
+            layerTree
+                .find((layer) => layer.name === parent)
+                ?.children.map((item) => branchKey(parent, item.name)) ?? [];
+
+        const childIsSelected =
+            selectedBranches === null || selectedBranches.includes(key);
+
+        if (childIsSelected) {
+            // ==========================================
+            // UNCHECK CHILD
+            // ==========================================
+
+            const nextBranches =
+                selectedBranches === null
+                    ? allBranchKeys.filter((branch) => branch !== key)
+                    : selectedBranches.filter((branch) => branch !== key);
+
+            branchSetter(nextBranches);
+
+            // Check whether this parent still has
+            // at least one selected child
+            const remainingParentBranches = nextBranches.filter((branch) =>
+                parentBranchKeys.includes(branch),
+            );
+
+            // If no children remain selected,
+            // uncheck the parent
+            if (remainingParentBranches.length === 0) {
+                const nextLayers =
+                    selectedLayers === null
+                        ? layerItems.filter((layer) => layer !== parent)
+                        : selectedLayers.filter((layer) => layer !== parent);
+
+                layerSetter(nextLayers);
+            }
+        } else {
+            // ==========================================
+            // CHECK CHILD
+            // ==========================================
+
+            const nextBranches =
+                selectedBranches === null
+                    ? allBranchKeys
+                    : [...new Set([...selectedBranches, key])];
+
+            // If ALL children across ALL parents are selected,
+            // simplify state to null = ALL
+            if (nextBranches.length === allBranchKeys.length) {
+                branchSetter(null);
+            } else {
+                branchSetter(nextBranches);
+            }
+
+            // Checking ONE child also checks its parent.
+            // Other children remain unchanged.
+            const parentIsSelected =
+                selectedLayers === null || selectedLayers.includes(parent);
+
+            if (!parentIsSelected) {
+                const nextLayers =
+                    selectedLayers === null
+                        ? null
+                        : [...selectedLayers, parent];
+
+                layerSetter(nextLayers);
+            }
+        }
     };
+
     const renderLocationCard = (
         location: (typeof photoboothLocations)[number],
     ) => (
@@ -252,25 +384,7 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
             tabIndex={0}
             aria-pressed={selectedLocationId === location.id}
         >
-            <span className="location-vendor">
-                {location.vendorLogo ? (
-                    <img
-                        className="vendor-logo"
-                        src={location.vendorLogo}
-                        alt=""
-                    />
-                ) : (
-                    <span
-                        className="vendor-logo vendor-logo-placeholder"
-                        aria-hidden="true"
-                    >
-                        {location.vendor.charAt(0)}
-                    </span>
-                )}
-                {location.vendor}
-            </span>
             <strong className="location-branch">{location.branchName}</strong>
-            {/* <span className="location-city">{location.country}</span> */}
             {location.address && (
                 <span className="location-address">
                     <MapPin aria-hidden="true" />
@@ -336,7 +450,7 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
                             <label className="layer-option is-all">
                                 <input
                                     type="checkbox"
-                                    checked={selectedLayers === null}
+                                    checked={isAllSelected}
                                     onChange={toggleAllLayers}
                                 />
                                 ALL{" "}
