@@ -22,7 +22,7 @@ export function PhotostripPreview({ image, frame }: Props) {
     return (
         <div className="strip-preview" aria-busy={isLoading}>
             {!isLoading && image ? (
-                <img src={image} alt="Completed HOT NERD THEORY photostrip" />
+                <img src={image} alt="Completed HOT NERD THEORY photo strip" />
             ) : (
                 <div
                     className="preview-skeleton"

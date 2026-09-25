@@ -32,7 +32,7 @@ export function FrameSelector({
             <div className="frame-layout">
                 <div className="mini-strip">
                     {preview ? (
-                        <img src={preview} alt="Photostrip preview" />
+                        <img src={preview} alt="Photo strip preview" />
                     ) : null}
                 </div>
 
