@@ -116,18 +116,92 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
             .get(id)
             ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     };
+    // const toggleLayer = (item: string) => {
+    //     const setter =
+    //         layerGroup === "country"
+    //             ? setSelectedCountries
+    //             : setSelectedVendors;
+    //     const next =
+    //         selectedLayers === null
+    //             ? layerItems.filter((layer) => layer !== item)
+    //             : selectedLayers.includes(item)
+    //               ? selectedLayers.filter((layer) => layer !== item)
+    //               : [...selectedLayers, item];
+    //     setter(next);
+    // };
     const toggleLayer = (item: string) => {
-        const setter =
+        const layerSetter =
             layerGroup === "country"
                 ? setSelectedCountries
                 : setSelectedVendors;
-        const next =
-            selectedLayers === null
-                ? layerItems.filter((layer) => layer !== item)
-                : selectedLayers.includes(item)
-                  ? selectedLayers.filter((layer) => layer !== item)
-                  : [...selectedLayers, item];
-        setter(next);
+
+        const branchSetter =
+            layerGroup === "country"
+                ? setSelectedCountryBranches
+                : setSelectedVendorBranches;
+
+        const parentIsSelected =
+            selectedLayers === null || selectedLayers.includes(item);
+
+        // All child branches belonging to this parent
+        const parentBranchKeys =
+            layerTree
+                .find((layer) => layer.name === item)
+                ?.children.map((child) => branchKey(item, child.name)) ?? [];
+
+        if (parentIsSelected) {
+            // UNCHECK PARENT
+            const nextLayers =
+                selectedLayers === null
+                    ? layerItems.filter((layer) => layer !== item)
+                    : selectedLayers.filter((layer) => layer !== item);
+
+            layerSetter(nextLayers);
+
+            // Also uncheck all children under this parent
+            const nextBranches =
+                selectedBranches === null
+                    ? layerTree
+                          .flatMap((layer) =>
+                              layer.children.map((child) =>
+                                  branchKey(layer.name, child.name),
+                              ),
+                          )
+                          .filter((key) => !parentBranchKeys.includes(key))
+                    : selectedBranches.filter(
+                          (key) => !parentBranchKeys.includes(key),
+                      );
+
+            branchSetter(nextBranches);
+        } else {
+            // CHECK PARENT
+            const nextLayers =
+                selectedLayers === null ? null : [...selectedLayers, item];
+
+            layerSetter(nextLayers);
+
+            // Also check all children under this parent
+            const allBranchKeys = layerTree.flatMap((layer) =>
+                layer.children.map((child) =>
+                    branchKey(layer.name, child.name),
+                ),
+            );
+
+            const nextBranches =
+                selectedBranches === null
+                    ? null
+                    : [...new Set([...selectedBranches, ...parentBranchKeys])];
+
+            // If every branch is now selected, simplify back to null
+            if (
+                nextBranches !== null &&
+                nextBranches.length === allBranchKeys.length
+            ) {
+                branchSetter(null);
+            } else {
+                branchSetter(nextBranches);
+            }
+        }
     };
     const toggleAllLayers = () =>
         (layerGroup === "country" ? setSelectedCountries : setSelectedVendors)(
