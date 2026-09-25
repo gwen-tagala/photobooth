@@ -19,6 +19,12 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
     const [selectedVendors, setSelectedVendors] = useState<string[] | null>(
         null,
     );
+    const [selectedCountryBranches, setSelectedCountryBranches] = useState<
+        string[] | null
+    >(null);
+    const [selectedVendorBranches, setSelectedVendorBranches] = useState<
+        string[] | null
+    >(null);
     const [collapsedLayers, setCollapsedLayers] = useState<string[]>([]);
     const [selectedLocationId, setSelectedLocationId] = useState<string | null>(
         null,
@@ -34,46 +40,74 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
         [],
     );
     const vendors = useMemo(
-        () => [...new Set(photoboothLocations.map((location) => location.vendor))].sort(),
+        () =>
+            [
+                ...new Set(
+                    photoboothLocations.map((location) => location.vendor),
+                ),
+            ].sort(),
         [],
     );
     const layerItems = layerGroup === "country" ? countries : vendors;
     const selectedLayers =
         layerGroup === "country" ? selectedCountries : selectedVendors;
+    const selectedBranches =
+        layerGroup === "country"
+            ? selectedCountryBranches
+            : selectedVendorBranches;
+    const branchKey = (parent: string, child: string) => `${parent}:${child}`;
     const layerTree = useMemo(
         () =>
             layerItems.map((parent) => {
-                const parentLocations = photoboothLocations.filter((location) =>
-                    layerGroup === "country"
-                        ? location.country === parent
-                        : location.vendor === parent,
+                const parentLocations = photoboothLocations.filter(
+                    (location) =>
+                        layerGroup === "country"
+                            ? location.country === parent
+                            : location.vendor === parent,
                 );
-                const childKey = layerGroup === "country" ? "vendor" : "country";
-                const children = [...new Set(parentLocations.map((location) => location[childKey]))]
+                const childKey =
+                    layerGroup === "country" ? "vendor" : "country";
+                const children = [
+                    ...new Set(
+                        parentLocations.map((location) => location[childKey]),
+                    ),
+                ]
                     .sort()
                     .map((child) => ({
                         name: child,
-                        count: parentLocations.filter((location) => location[childKey] === child).length,
+                        count: parentLocations.filter(
+                            (location) => location[childKey] === child,
+                        ).length,
+                        locations: parentLocations.filter(
+                            (location) => location[childKey] === child,
+                        ),
                         color: getVendorColor(
                             layerGroup === "country" ? child : parent,
                         ),
                     }));
-                return { name: parent, children };
+                return { name: parent, children, locations: parentLocations };
             }),
         [layerGroup, layerItems],
     );
     const visibleLocations = useMemo(
         () =>
-            photoboothLocations.filter(
-                (location) =>
-                    selectedLayers === null ||
-                    selectedLayers.includes(
-                        layerGroup === "country"
-                            ? location.country
-                            : location.vendor,
-                    ),
-            ),
-        [layerGroup, selectedLayers],
+            photoboothLocations.filter((location) => {
+                const parent =
+                    layerGroup === "country"
+                        ? location.country
+                        : location.vendor;
+                const child =
+                    layerGroup === "country"
+                        ? location.vendor
+                        : location.country;
+                return (
+                    (selectedLayers === null ||
+                        selectedLayers.includes(parent)) &&
+                    (selectedBranches === null ||
+                        selectedBranches.includes(branchKey(parent, child)))
+                );
+            }),
+        [layerGroup, selectedBranches, selectedLayers],
     );
     const hasFilters = selectedLayers !== null;
     const selectLocation = (id: string) => {
@@ -83,12 +117,16 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
             ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     };
     const toggleLayer = (item: string) => {
-        const setter = layerGroup === "country" ? setSelectedCountries : setSelectedVendors;
-        const next = selectedLayers === null
-            ? layerItems.filter((layer) => layer !== item)
-            : selectedLayers.includes(item)
-              ? selectedLayers.filter((layer) => layer !== item)
-              : [...selectedLayers, item];
+        const setter =
+            layerGroup === "country"
+                ? setSelectedCountries
+                : setSelectedVendors;
+        const next =
+            selectedLayers === null
+                ? layerItems.filter((layer) => layer !== item)
+                : selectedLayers.includes(item)
+                  ? selectedLayers.filter((layer) => layer !== item)
+                  : [...selectedLayers, item];
         setter(next);
     };
     const toggleAllLayers = () =>
@@ -103,6 +141,84 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
                 : [...current, key],
         );
     };
+    const toggleChildBranch = (parent: string, child: string) => {
+        const key = `${layerGroup}:${parent}:${child}`;
+        setCollapsedLayers((current) =>
+            current.includes(key)
+                ? current.filter((item) => item !== key)
+                : [...current, key],
+        );
+    };
+    const toggleChildLayer = (parent: string, child: string) => {
+        const setter =
+            layerGroup === "country"
+                ? setSelectedCountryBranches
+                : setSelectedVendorBranches;
+        const allBranches = layerTree.flatMap((layer) =>
+            layer.children.map((item) => branchKey(layer.name, item.name)),
+        );
+        const key = branchKey(parent, child);
+        const next =
+            selectedBranches === null
+                ? allBranches.filter((item) => item !== key)
+                : selectedBranches.includes(key)
+                  ? selectedBranches.filter((item) => item !== key)
+                  : [...selectedBranches, key];
+        setter(next);
+    };
+    const renderLocationCard = (
+        location: (typeof photoboothLocations)[number],
+    ) => (
+        <div
+            key={location.id}
+            ref={(element) => {
+                if (element) cardRefs.current.set(location.id, element);
+                else cardRefs.current.delete(location.id);
+            }}
+            className={`location-card${selectedLocationId === location.id ? " is-active" : ""}`}
+            style={
+                {
+                    "--vendor-color": getVendorColor(location.vendor),
+                } as CSSProperties
+            }
+            onClick={() => selectLocation(location.id)}
+            onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    selectLocation(location.id);
+                }
+            }}
+            role="button"
+            tabIndex={0}
+            aria-pressed={selectedLocationId === location.id}
+        >
+            <span className="location-vendor">
+                {location.vendorLogo ? (
+                    <img
+                        className="vendor-logo"
+                        src={location.vendorLogo}
+                        alt=""
+                    />
+                ) : (
+                    <span
+                        className="vendor-logo vendor-logo-placeholder"
+                        aria-hidden="true"
+                    >
+                        {location.vendor.charAt(0)}
+                    </span>
+                )}
+                {location.vendor}
+            </span>
+            <strong className="location-branch">{location.branchName}</strong>
+            {/* <span className="location-city">{location.country}</span> */}
+            {location.address && (
+                <span className="location-address">
+                    <MapPin aria-hidden="true" />
+                    {location.address}
+                </span>
+            )}
+        </div>
+    );
 
     return (
         <main className="offline-page page-shell">
@@ -127,65 +243,28 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
                         aria-label="Photobooth layers and visible branches"
                     >
                         <div className="layer-controls">
-                            <label className="layer-group-select" htmlFor="layer-group">
+                            <label
+                                className="layer-group-select"
+                                htmlFor="layer-group"
+                            >
                                 SHOW LAYERS BY
                                 <select
                                     id="layer-group"
                                     value={layerGroup}
                                     onChange={(event) =>
-                                        setLayerGroup(event.target.value as "country" | "vendor")
+                                        setLayerGroup(
+                                            event.target.value as
+                                                | "country"
+                                                | "vendor",
+                                        )
                                     }
                                 >
                                     <option value="country">Country</option>
-                                    <option value="vendor">Photobooth Vendor</option>
+                                    <option value="vendor">
+                                        Photobooth Vendor
+                                    </option>
                                 </select>
                             </label>
-                            <div className="layer-tree">
-                                <label className="layer-option is-all">
-                                    <input type="checkbox" checked={selectedLayers === null} onChange={toggleAllLayers} />
-                                    ALL {layerGroup === "country" ? "COUNTRIES" : "VENDORS"}
-                                </label>
-                                {layerTree.map((layer) => {
-                                    const layerKey = `${layerGroup}:${layer.name}`;
-                                    const isCollapsed = collapsedLayers.includes(layerKey);
-                                    return (
-                                        <div className="layer-parent" key={layer.name}>
-                                            <div className="layer-parent-main">
-                                                <label className="layer-option">
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={selectedLayers === null || selectedLayers.includes(layer.name)}
-                                                        onChange={() => toggleLayer(layer.name)}
-                                                    />
-                                                    {layer.name}
-                                                </label>
-                                                <button
-                                                    className="layer-branch-toggle"
-                                                    type="button"
-                                                    onClick={() => toggleLayerBranch(layer.name)}
-                                                    aria-expanded={!isCollapsed}
-                                                    aria-label={`${isCollapsed ? "Expand" : "Collapse"} ${layer.name}`}
-                                                >
-                                                    {isCollapsed ? <ChevronRight aria-hidden="true" /> : <ChevronDown aria-hidden="true" />}
-                                                </button>
-                                            </div>
-                                            {!isCollapsed && (
-                                                <div className="layer-children">
-                                                    <span className="layer-children-title">
-                                                        GROUPED BY {layerGroup === "country" ? "VENDOR" : "COUNTRY"}
-                                                    </span>
-                                                    {layer.children.map((child) => (
-                                                        <span className="layer-child" key={child.name}>
-                                                            <i style={{ backgroundColor: child.color }} />
-                                                            {child.name} <small>({child.count})</small>
-                                                        </span>
-                                                    ))}
-                                                </div>
-                                            )}
-                                        </div>
-                                    );
-                                })}
-                            </div>
                         </div>
                         <div className="location-list-heading">
                             <strong>
@@ -193,106 +272,186 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
                                 {hasFilters ? "LOCATIONS FOUND" : "LOCATIONS"}
                             </strong>
                         </div>
-                        {visibleLocations.length > 0 ? (
-                            <div className="location-list">
-                                {visibleLocations.map((location) => (
+                        <div className="layer-tree">
+                            <label className="layer-option is-all">
+                                <input
+                                    type="checkbox"
+                                    checked={selectedLayers === null}
+                                    onChange={toggleAllLayers}
+                                />
+                                ALL{" "}
+                                {layerGroup === "country"
+                                    ? "COUNTRIES"
+                                    : "VENDORS"}
+                            </label>
+                            {layerTree.map((layer) => {
+                                const layerKey = `${layerGroup}:${layer.name}`;
+                                const isCollapsed =
+                                    collapsedLayers.includes(layerKey);
+                                const branchLocations =
+                                    selectedLayers === null ||
+                                    selectedLayers.includes(layer.name)
+                                        ? layer.locations
+                                        : [];
+                                return (
                                     <div
-                                        key={location.id}
-                                        ref={(element) => {
-                                            if (element)
-                                                cardRefs.current.set(
-                                                    location.id,
-                                                    element,
-                                                );
-                                            else
-                                                cardRefs.current.delete(
-                                                    location.id,
-                                                );
-                                        }}
-                                        className={`location-card${selectedLocationId === location.id ? " is-active" : ""}`}
-                                        style={
-                                            {
-                                                "--vendor-color":
-                                                    getVendorColor(
-                                                        location.vendor,
-                                                    ),
-                                            } as CSSProperties
-                                        }
-                                        onClick={() =>
-                                            selectLocation(location.id)
-                                        }
-                                        onKeyDown={(event) => {
-                                            if (
-                                                event.key === "Enter" ||
-                                                event.key === " "
-                                            ) {
-                                                event.preventDefault();
-                                                selectLocation(location.id);
-                                            }
-                                        }}
-                                        role="button"
-                                        tabIndex={0}
-                                        aria-pressed={
-                                            selectedLocationId === location.id
-                                        }
+                                        className="layer-parent"
+                                        key={layer.name}
                                     >
-                                        <span className="location-vendor">
-                                            {location.vendorLogo ? (
-                                                <img
-                                                    className="vendor-logo"
-                                                    src={location.vendorLogo}
-                                                    alt=""
+                                        <div className="layer-parent-main">
+                                            <label className="layer-option">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={
+                                                        selectedLayers ===
+                                                            null ||
+                                                        selectedLayers.includes(
+                                                            layer.name,
+                                                        )
+                                                    }
+                                                    onChange={() =>
+                                                        toggleLayer(layer.name)
+                                                    }
                                                 />
-                                            ) : (
-                                                <span
-                                                    className="vendor-logo vendor-logo-placeholder"
-                                                    aria-hidden="true"
-                                                >
-                                                    {location.vendor.charAt(0)}
+                                                {layer.name}
+                                            </label>
+                                            <button
+                                                className="layer-branch-toggle"
+                                                type="button"
+                                                onClick={() =>
+                                                    toggleLayerBranch(
+                                                        layer.name,
+                                                    )
+                                                }
+                                                aria-expanded={!isCollapsed}
+                                                aria-label={`${isCollapsed ? "Expand" : "Collapse"} ${layer.name}`}
+                                            >
+                                                {isCollapsed ? (
+                                                    <ChevronRight aria-hidden="true" />
+                                                ) : (
+                                                    <ChevronDown aria-hidden="true" />
+                                                )}
+                                            </button>
+                                        </div>
+                                        {!isCollapsed && (
+                                            <div className="layer-children">
+                                                <span className="layer-children-title">
+                                                    GROUPED BY{" "}
+                                                    {layerGroup === "country"
+                                                        ? "VENDOR"
+                                                        : "COUNTRY"}
                                                 </span>
-                                            )}
-                                            {location.vendor}
-                                        </span>
-                                        <strong className="location-branch">
-                                            {location.branchName}
-                                        </strong>
-                                        <span className="location-city">
-                                            {location.country}
-                                        </span>
-                                        {location.address && (
-                                            <span className="location-address">
-                                                <MapPin aria-hidden="true" />
-                                                {location.address}
-                                            </span>
+                                                {layer.children.map((child) => {
+                                                    const childKey = `${layerGroup}:${layer.name}:${child.name}`;
+                                                    const isChildCollapsed =
+                                                        collapsedLayers.includes(
+                                                            childKey,
+                                                        );
+                                                    const childLocations =
+                                                        (selectedBranches ===
+                                                            null ||
+                                                            selectedBranches.includes(
+                                                                branchKey(
+                                                                    layer.name,
+                                                                    child.name,
+                                                                ),
+                                                            )) &&
+                                                        branchLocations.length >
+                                                            0
+                                                            ? child.locations
+                                                            : [];
+                                                    return (
+                                                        <div
+                                                            className="layer-child-branch"
+                                                            key={child.name}
+                                                        >
+                                                            <div className="layer-child-main">
+                                                                <label className="layer-child">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        checked={
+                                                                            selectedBranches ===
+                                                                                null ||
+                                                                            selectedBranches.includes(
+                                                                                branchKey(
+                                                                                    layer.name,
+                                                                                    child.name,
+                                                                                ),
+                                                                            )
+                                                                        }
+                                                                        onChange={() =>
+                                                                            toggleChildLayer(
+                                                                                layer.name,
+                                                                                child.name,
+                                                                            )
+                                                                        }
+                                                                    />
+                                                                    <i
+                                                                        style={{
+                                                                            backgroundColor:
+                                                                                child.color,
+                                                                        }}
+                                                                    />
+                                                                    {child.name}{" "}
+                                                                    <small>
+                                                                        (
+                                                                        {
+                                                                            child.count
+                                                                        }
+                                                                        )
+                                                                    </small>
+                                                                </label>
+                                                                <button
+                                                                    className="layer-branch-toggle layer-child-toggle"
+                                                                    type="button"
+                                                                    onClick={() =>
+                                                                        toggleChildBranch(
+                                                                            layer.name,
+                                                                            child.name,
+                                                                        )
+                                                                    }
+                                                                    aria-expanded={
+                                                                        !isChildCollapsed
+                                                                    }
+                                                                    aria-label={`${isChildCollapsed ? "Expand" : "Collapse"} ${child.name}`}
+                                                                >
+                                                                    {isChildCollapsed ? (
+                                                                        <ChevronRight aria-hidden="true" />
+                                                                    ) : (
+                                                                        <ChevronDown aria-hidden="true" />
+                                                                    )}
+                                                                </button>
+                                                            </div>
+                                                            {!isChildCollapsed && (
+                                                                <div className="layer-grandchildren">
+                                                                    {childLocations.map(
+                                                                        renderLocationCard,
+                                                                    )}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
                                         )}
-                                        <a
-                                            className="location-directions"
-                                            href={`https://www.google.com/maps/search/?api=1&query=${location.latitude},${location.longitude}`}
-                                            target="_blank"
-                                            rel="noreferrer"
-                                            onClick={(event) =>
-                                                event.stopPropagation()
-                                            }
-                                        >
-                                            GET DIRECTIONS ↗
-                                        </a>
                                     </div>
-                                ))}
-                            </div>
-                        ) : (
-                            <div className="list-empty">
-                                <strong>
-                                    {hasFilters
-                                        ? "NO PHOTOBOOTHS FOUND"
-                                        : "LOCATIONS COMING SOON"}
-                                </strong>
-                                <p>
-                                    {hasFilters
-                                        ? "Try changing your country or vendor filters."
-                                        : "Confirmed branches will appear here."}
-                                </p>
-                            </div>
-                        )}
+                                );
+                            })}
+                            {visibleLocations.length === 0 && (
+                                <div className="list-empty">
+                                    <strong>
+                                        {hasFilters
+                                            ? "NO PHOTOBOOTHS FOUND"
+                                            : "LOCATIONS COMING SOON"}
+                                    </strong>
+                                    <p>
+                                        {hasFilters
+                                            ? "Try changing your country or vendor filters."
+                                            : "Confirmed branches will appear here."}
+                                    </p>
+                                </div>
+                            )}
+                        </div>
                     </aside>
                     <div className="offline-map-wrap">
                         <PhotoboothMap
