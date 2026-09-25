@@ -1,7 +1,6 @@
 import { useMemo, useRef, useState, type CSSProperties } from "react";
 import { ArrowLeft, ChevronDown, ChevronRight, MapPin } from "lucide-react";
 import { PhotoboothMap } from "./PhotoboothMap";
-// import { VendorLegend } from "./VendorLegend";
 import { photoboothLocations } from "../data/photoboothLocations";
 import { getVendorColor } from "../data/vendorConfig";
 
@@ -116,19 +115,6 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
             .get(id)
             ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     };
-    // const toggleLayer = (item: string) => {
-    //     const setter =
-    //         layerGroup === "country"
-    //             ? setSelectedCountries
-    //             : setSelectedVendors;
-    //     const next =
-    //         selectedLayers === null
-    //             ? layerItems.filter((layer) => layer !== item)
-    //             : selectedLayers.includes(item)
-    //               ? selectedLayers.filter((layer) => layer !== item)
-    //               : [...selectedLayers, item];
-    //     setter(next);
-    // };
     const toggleLayer = (item: string) => {
         const layerSetter =
             layerGroup === "country"
