@@ -1754,24 +1754,21 @@ h1 span {
     }
     .offline-map-wrap {
         order: -1;
+        height: min(42svh, 500px);
+        min-height: 280px;
     }
     .photobooth-map {
-        height: min(62vh, 570px);
-        min-height: 380px;
-    }
-    .offline-map-wrap {
-        min-height: 380px;
+        height: 100%;
+        min-height: 0;
     }
     .location-list-panel {
-        min-height: auto;
+        height: min(70svh, 620px);
+        min-height: 0;
+        overflow: hidden;
     }
-    .location-list-panel {
-        height: auto;
-        overflow: visible;
-    }
-    .location-list {
-        flex: initial;
-        max-height: min(55svh, 520px);
+    .layer-tree {
+        flex: 1;
+        min-height: 0;
         overflow-y: auto;
         overscroll-behavior: contain;
         -webkit-overflow-scrolling: touch;

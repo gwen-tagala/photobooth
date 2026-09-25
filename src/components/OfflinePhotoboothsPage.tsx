@@ -765,12 +765,7 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
                         )}
                     </div>
                 </div>
-                {/* <VendorLegend vendors={vendors} /> */}
             </section>
-            {/* <p className="offline-footnote">
-                Branch details will appear here once confirmed by participating
-                vendors.
-            </p> */}
         </main>
     );
 }
