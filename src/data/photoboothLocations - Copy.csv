@@ -1,0 +1,161 @@
+﻿id,vendor,country,branchName,address,latitude,longitude,operatingDates,pricing,website,instagram,notes
+sarang-sajin-01,Sarang Sajin,Malaysia,Setia City Mall,L1 & L2,3.1094690,101.4602180,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+sarang-sajin-02,Sarang Sajin,Malaysia,1 Utama Shopping Centre,,3.1508400,101.6154220,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+sarang-sajin-03,Sarang Sajin,Malaysia,Sunway Velocity Mall,L4,3.1278710,101.7248450,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+sarang-sajin-04,Sarang Sajin,Malaysia,Empire City,LG1,3.1685190,101.6148670,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+photo-ace-01,Photo Ace,Malaysia,1 Utama Shopping Centre,L2 New Wing,3.1507080,101.6152610,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+photo-ace-02,Photo Ace,Malaysia,Pavillion Bukit Jalil,L5 Orange Zone,3.0497890,101.6719680,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-01,Solace Studios,Malaysia,Georgetown Penang,141 Lebuh Carnarvon,5.4153010,100.3353390,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-02,Solace Studios,Malaysia,Shah Alam Central i-City,L4,3.0627050,101.4821680,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-03,Solace Studios,Malaysia,The Spring Kuching,L2,1.5355460,110.3582020,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-04,Solace Studios,Malaysia,Plaza Merdeka,LG,1.5581630,110.3440550,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-05,Solace Studios,Singapore,73 Haji Lane,,1.3014670,103.8584350,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-06,Solace Studios,Singapore,76 Haji Lane,Laundrosnap,1.3015200,103.8586510,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-07,Solace Studios,Singapore,Orchard Gateway,#02-03,1.3002790,103.8388320,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-08,Solace Studios,Singapore,Capitol Singapore,Unit #B2-K3,1.2930410,103.8511200,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-09,Solace Studios,Singapore,Leisure Park Kallang,#01-20,1.3021920,103.876502,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-10,Solace Studios,Singapore,Cineleisure,L1 Near Lift Lobby,1.3016870,103.8365740,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-11,Solace Studios,Singapore,Kallang Wave Mall,"L1,  opposite of Choc Origin",1.3026670,103.8737640,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-12,Solace Studios,Singapore,Zouk Singapore,L2,1.2907800,103.8460050,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-13,Solace Studios,Singapore,The Cathay,#01-08,1.2993780,103.8478030,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-14,Solace Studios,Singapore,Junction 8,Near Swensen's,1.3509670,103.8486060,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-15,Solace Studios,Singapore,Sanrio Gift Gate,,1.2821860,103.8442790,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-16,Solace Studios,Singapore,Causeway Point,#03-26A,1.4360930,103.7859470,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-17,Solace Studios,Singapore,The Seletar Mall,#02-13,1.3912360,103.8759110,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-18,Solace Studios,Singapore,Waterway Point,#B1-39/40,1.4064410,103.9020850,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-19,Solace Studios,Singapore,VivoCity,#02-37,1.2639960,103.823199,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-20,Solace Studios,Singapore,Century Square,#03-24,1.3524460,103.9438430,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-21,Solace Studios,Singapore,Jewel Changi,#04-239,1.3608040,103.989404,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-22,Solace Studios,Singapore,Parkway Parade,#B1-70/71,1.3010580,103.9052800,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-23,Solace Studios,Singapore,Singapore EXPO Foyer 2,"L1,  Near Joe & Dough",1.3355970,103.9610510,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-24,Solace Studios,Singapore,JEM,#04-53,1.3330170,103.7437040,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-25,Solace Studios,Singapore,Hillion Mall,B1 Area C,1.3783620,103.7637430,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-26,Solace Studios,Singapore,The Star Vista,#01-51A,1.3068070,103.7884000,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-27,Solace Studios,Singapore,Jurong Point,#03-62,1.3387130,103.7049210,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-28,Solace Studios,Singapore,CityLink Mall,#B1-45,1.2918940,103.8553230,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+solace-studios-29,Solace Studios,UAE,The Galleria Al Maryah Island,L3,24.5015420,54.3903650,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-01,POCKR by Flashback,Thailand,TRES.,,13.7448520,100.5343970,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-02,POCKR by Flashback,Thailand,Old Day Bloom Cafe,,13.7450620,100.5322300,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-03,POCKR by Flashback,Thailand,LIBI HOME,,13.7484510,100.5287490,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-04,POCKR by Flashback,Thailand,STOCKROOM,,13.7504770,100.5325840,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-05,POCKR by Flashback,Thailand,The Commons Thonglor,,13.7351350,100.5822320,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-06,POCKR by Flashback,Thailand,Soho Community Ekkamai,,13.7355770,100.5880900,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-07,POCKR by Flashback,Thailand,Paper Plane Project,,13.7222790,100.5804200,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-08,POCKR by Flashback,Thailand,OFTR Bar,,13.7379930,100.5666200,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-09,POCKR by Flashback,Thailand,TUBA Bar & Restaurant,,13.7384170,100.5884870,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-10,POCKR by Flashback,Thailand,Tonic Ekkamai,,13.7302730,100.5861110,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-11,POCKR by Flashback,Thailand,SEENSPACE Thong Lo,,13.7334220,100.5813830,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-12,POCKR by Flashback,Thailand,butter bakery ladprao18,,13.8029330,100.5683170,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-13,POCKR by Flashback,Thailand,ChumChum Grocery,,13.7298400,100.5957840,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-14,POCKR by Flashback,Thailand,theCOMMONS Cloud 11,,13.6845350,100.6100020,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-15,POCKR by Flashback,Thailand,COF AND COW at NANGLINCHEE (Coffee shop),,13.7100030,100.5422100,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-16,POCKR by Flashback,Thailand,Goofy Juice,,18.7985990,98.9693890,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-17,POCKR by Flashback,Thailand,Velaa Sindhorn Village,,13.7384480,100.5432410,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-18,POCKR by Flashback,Thailand,theCOMMONS Saladaeng,,13.7259540,100.5386110,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-19,POCKR by Flashback,Thailand,Bo,,13.7222960,100.5444950,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-20,POCKR by Flashback,Thailand,Akirart Cafe Studio,,13.7398860,100.5134000,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-21,POCKR by Flashback,Thailand,Dawn To Dusk,,13.7391700,100.6821600,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-22,POCKR by Flashback,Thailand,Kantima Salon - Charoen Nakhon,,13.7245740,100.5087610,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-23,POCKR by Flashback,Thailand,GUMP’s Ari Community Space,,13.7831350,100.5431600,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-24,POCKR by Flashback,Thailand,Flashback Mansion,,13.7829870,100.5426260,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-25,POCKR by Flashback,Thailand,Sunny Flavour Cafe,,13.7927240,100.5447330,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-26,POCKR by Flashback,Thailand,Knock Knock Cafe & Bar,,13.7786040,100.5360290,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-27,POCKR by Flashback,Thailand,Baby Bar Bangkok,,13.7876500,100.5448840,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-28,POCKR by Flashback,Thailand,Repeat Ari,,13.7876020,100.5475950,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-29,POCKR by Flashback,Thailand,Tieng Na coffee and Bakery Farm,,16.9102000,99.1194450,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pockr-by-flashback-30,POCKR by Flashback,Thailand,Coastly,,12.8913700,99.6340150,"February 5-xx, 2027",Pricing to be announced,https://example.com/hello-photo,https://instagram.com/example,Sample location for testing only.
+pickpic-01,PICKPIC,United Kingdom,Leicester Square,,51.5121890,-0.1283510,,,,,
+pickpic-02,PICKPIC,United Kingdom,Shoreditch,,51.5250960,-0.0709440,,,,,
+atm-studio-01,A.T.M Studio,Macau,DiGREEN,Broadway Food Court E-G034,22.1460920,113.5515980,,,,,
+atm-studio-02,A.T.M Studio,Macau,Day One Coffee,Guanye Street Store. Near Taipa Fire Station Square No. 5 (behind Nike on Rua de Koon Ye),22.1546430,113.5563500,,,,,
+snappy-studio-01,Snappy Studio,Hong Kong,Argyle Centre,"1/F - F58 | 2/F - S50, S51, S54 & S57",22.3198780,114.1697160,,,,,
+snappy-studio-02,Snappy Studio,Hong Kong,New Town Plaza,1/F - 130,22.3817580,114.1886370,,,,,
+hello-photo-01,Hello Photo,Philippines,SM Megamall,"L2, Building A",14.5853250,121.0573290,,,,,
+hello-photo-02,Hello Photo,Philippines,Robinsons Manila,L4,14.5755950,120.9835870,,,,,
+hello-photo-03,Hello Photo,Philippines,Bonifacio High Street,L4,14.5515940,121.0493660,,,,,
+hello-photo-04,Hello Photo,Philippines,Newport Mall,L4,14.5192950,121.0196630,,,,,
+hello-photo-05,Hello Photo,Philippines,SM City Grand Central,L5,14.6548200,120.9841260,,,,,
+snaplab-01,Snaplab,Indonesia,Martha Tiahahu Literacy Park,,-6.2433130,106.798726,,,,,
+snaplab-02,Snaplab,Indonesia,Gang Viral Pasaraya Blok M,,-6.2440460,106.8021090,,,,,
+snaplab-03,Snaplab,Indonesia,Pasaraya Blok M,,-6.2445670,106.8021090,,,,,
+snaplab-04,Snaplab,Indonesia,Room 23 Hideout,,-6.9132690,107.6281790,,,,,
+snaplab-05,Snaplab,Indonesia,Kuro Koffee,,-6.8710820,107.6057390,,,,,
+snaplab-06,Snaplab,Indonesia,Sudut Coffee,,5.5230140,95.3638250,,,,,
+snaplab-07,Snaplab,Indonesia,AWANNCOSTA,,-6.9470350,110.3749580,,,,,
+snaplab-08,Snaplab,Indonesia,ONNI House Surabaya,,-7.2858280,112.7331220,,,,,
+sukhakala-01,Sukhakala,Indonesia,Kopikalyan Wijaya,,-6.2487950,106.8035560,,,,,
+sukhakala-02,Sukhakala,Indonesia,Umbira,,-6.9168030,107.6092580,,,,,
+sukhakala-03,Sukhakala,Indonesia,Kopi Cantel,,-6.9048110,107.6199680,,,,,
+sukhakala-04,Sukhakala,Indonesia,de.u Coffee,,-6.8959130,107.6162650,,,,,
+sukhakala-05,Sukhakala,Indonesia,Rolun Coffee And Pastry,,-6.9835450,107.6334860,,,,,
+sukhakala-06,Sukhakala,Indonesia,Pasar Parahyangan - KBP,,-6.8684420,107.4644510,,,,,
+sukhakala-07,Sukhakala,Indonesia,Monday & Co Dago,,-6.8673300,107.6193870,,,,,
+sukhakala-08,Sukhakala,Indonesia,Imago Hills,,-6.8488830,107.6472460,,,,,
+sukhakala-09,Sukhakala,Indonesia,Northwood Cihampelas Reserve,,-6.8913920,107.6040500,,,,,
+sukhakala-10,Sukhakala,Indonesia,"NUU JII Resto, Coffee & Events",,-6.9544950,107.6707310,,,,,
+sukhakala-11,Sukhakala,Indonesia,Braga Citywalk,,-6.9171190,107.6084640,,,,,
+sukhakala-12,Sukhakala,Indonesia,De.u Coffee Dago,,-6.8712240,107.6276330,,,,,
+sukhakala-13,Sukhakala,Indonesia,Kartika Sari Ujung Berung,,-6.9136290,107.6984050,,,,,
+sukhakala-14,Sukhakala,Indonesia,Morgy Coffee,,-6.9117790,107.6296020,,,,,
+sukhakala-15,Sukhakala,Indonesia,Armor Genuine - Sunda 8,,-6.9231880,107.6176740,,,,,
+sukhakala-16,Sukhakala,Indonesia,The Houseplants Coffee,,-6.9104800,107.6293440,,,,,
+sukhakala-17,Sukhakala,Indonesia,Monday Co Kiara Artha Park,,-6.9168130,107.6421480,,,,,
+sukhakala-18,Sukhakala,Indonesia,911 Coffee Buah Batu,,-6.9430320,107.6298550,,,,,
+sukhakala-19,Sukhakala,Indonesia,WŌRK-UNUSUAL,,-6.9344370,107.6199720,,,,,
+sukhakala-20,Sukhakala,Indonesia,911 Coffee Dago,,-6.8573560,107.6357890,,,,,
+sukhakala-21,Sukhakala,Indonesia,Duwatiga by De.u,,-6.9052640,107.6012500,,,,,
+sukhakala-22,Sukhakala,Indonesia,ANORA Jakarta,,-6.1962100,106.8715880,,,,,
+sukhakala-23,Sukhakala,Indonesia,Senayan Park,,-6.2124040,106.8036460,,,,,
+sukhakala-24,Sukhakala,Indonesia,Sonaa | Senayan Park,,-6.2123890,106.8037110,,,,,
+sukhakala-25,Sukhakala,Indonesia,TERU,,-6.2437590,106.7933400,,,,,
+sukhakala-26,Sukhakala,Indonesia,Cawan Putih Bintaro,,-6.2891670,106.7308740,,,,,
+sukhakala-27,Sukhakala,Indonesia,Sky Pasta Signature - Pamulang,,-6.3362310,106.7178880,,,,,
+sukhakala-28,Sukhakala,Indonesia,ALTRO Social Coffeehouse & Kitchen,,-6.6039820,106.8101670,,,,,
+sukhakala-29,Sukhakala,Indonesia,"HODL TREE COFFEE & CHILL, PAKANSARI",,-6.5085110,106.8336000,,,,,
+sukhakala-30,Sukhakala,Indonesia,HVBITAT CAFE,,-6.6033650,106.8117070,,,,,
+sukhakala-31,Sukhakala,Indonesia,KOBA Coffee.id,,-6.6007360,106.7922250,,,,,
+sukhakala-32,Sukhakala,Indonesia,Kuku Riku House,,-6.5966490,106.7525630,,,,,
+sukhakala-33,Sukhakala,Indonesia,Paddy Playstore Dreamscape (Bogor),,-6.5773320,106.7995890,,,,,
+sukhakala-34,Sukhakala,Indonesia,Snowville Sentul,,-6.5970490,106.8647760,,,,,
+sukhakala-35,Sukhakala,Indonesia,Raindear Coffee & Kitchen Taman Budaya Sentul,,-6.5848630,106.8820390,,,,,
+sukhakala-36,Sukhakala,Indonesia,LOWKY,,-6.2765570,106.9746760,,,,,
+sukhakala-37,Sukhakala,Indonesia,Paddy Playstore Rainforest (Bekasi),,-6.2731320,106.9734310,,,,,
+sukhakala-38,Sukhakala,Indonesia,KANA ARTSPACE,,-6.7189870,108.5521560,,,,,
+sukhakala-39,Sukhakala,Indonesia,Pantai Indah Hotel Pangandaran Barat,,-7.6996890,108.6577010,,,,,
+sukhakala-40,Sukhakala,Indonesia,Huddlez space,,-6.6862710,107.6339150,,,,,
+sukhakala-41,Sukhakala,Indonesia,NOU CIMAHI,,-6.8802580,107.5425110,,,,,
+sukhakala-42,Sukhakala,Indonesia,A&M Co. Yogyakarta,,-7.8233130,110.3681870,,,,,
+sukhakala-43,Sukhakala,Indonesia,Bloomery Atelier Yogyakarta,,-7.7700510,110.3576440,,,,,
+sukhakala-44,Sukhakala,Indonesia,Bloomery Cake & Patisserie Jakal,,-7.7602590,110.3810620,,,,,
+sukhakala-45,Sukhakala,Indonesia,Paddy Playstore Bake Lab,,-7.7640420,110.3934680,,,,,
+sukhakala-46,Sukhakala,Indonesia,STAIRS at Prawirotaman,,-7.8191030,110.3695630,,,,,
+sukhakala-47,Sukhakala,Indonesia,Sushi Rame,,-7.5628250,110.8149620,,,,,
+sukhakala-48,Sukhakala,Indonesia,Anantari Coffee,,-7.0337150,110.4420380,,,,,
+sukhakala-49,Sukhakala,Indonesia,Bloomery Cake & Patisserie Kota Lama Semarang,,-6.9673470,110.4283080,,,,,
+sukhakala-50,Sukhakala,Indonesia,Lentera Eatery & Pastry A.Yani,,-6.9934850,110.4291670,,,,,
+sukhakala-51,Sukhakala,Indonesia,Sorak Sorai Coffee BSB City,,-7.0249500,110.3272170,,,,,
+sukhakala-52,Sukhakala,Indonesia,The Ambaru Coffee And Eatery,,-7.0463280,110.4475650,,,,,
+sukhakala-53,Sukhakala,Indonesia,K - Chan,,-7.4173620,109.2520390,,,,,
+sukhakala-54,Sukhakala,Indonesia,ROCKWOOD COFFEESHOP & PHOTOBOX WONOSOBO,,-7.3488010,109.9078450,,,,,
+sukhakala-55,Sukhakala,Indonesia,House of Daeju,,-7.3006730,112.7597560,,,,,
+sukhakala-56,Sukhakala,Indonesia,Kopikalyan Darmo,,-7.2830230,112.7373950,,,,,
+sukhakala-57,Sukhakala,Indonesia,Paddy Playstore Cosmic Tennis (Surabaya),,-7.2592430,112.7389790,,,,,
+sukhakala-58,Sukhakala,Indonesia,Toby's Fried Chicken - Wiyung,,-7.3110700,112.6811730,,,,,
+sukhakala-59,Sukhakala,Indonesia,gingsul kopi & kudapan,,-7.9644880,112.6247980,,,,,
+sukhakala-60,Sukhakala,Indonesia,Kolektibles Malang,,-7.9642750,112.5929160,,,,,
+sukhakala-61,Sukhakala,Indonesia,Pitu,,-7.9468690,112.6183870,,,,,
+sukhakala-62,Sukhakala,Indonesia,Semeru 27,,-7.9765430,112.6282770,,,,,
+sukhakala-63,Sukhakala,Indonesia,TimTong,,-7.9752860,112.6190140,,,,,
+sukhakala-64,Sukhakala,Indonesia,The Olive Branch,,-7.7051390,112.6672090,,,,,
+sukhakala-65,Sukhakala,Indonesia,SEKARUANG,,-7.1544290,112.6167230,,,,,
+sukhakala-66,Sukhakala,Indonesia,Jackfruit Brunch & Coffee,,-8.7094380,115.1716850,,,,,
+sukhakala-67,Sukhakala,Indonesia,Rumah Gemuk Bali,,-8.2668970,115.1606520,,,,,
+sukhakala-68,Sukhakala,Indonesia,Stuja Coffee Bali,,-8.6631440,115.1683030,,,,,
+sukhakala-69,Sukhakala,Indonesia,"Nuju Coffee HQ, Enggal",,-5.4198980,105.2612590,,,,,
+sukhakala-70,Sukhakala,Indonesia,OMA Backyard,,-5.4193420,105.2626870,,,,,
+sukhakala-71,Sukhakala,Indonesia,Zozo Garden | Cafe Lampung,,-5.3944230,105.2816480,,,,,
+sukhakala-72,Sukhakala,Indonesia,Laya.hub,,0.4533180,101.4556010,,,,,
+sukhakala-73,Sukhakala,Indonesia,"Laya.hub, Sukajadi",,0.5124000,101.4346220,,,,,
+sukhakala-74,Sukhakala,Indonesia,KOPPI WAREHOUSE,,-2.9679730,104.7252280,,,,,
+sukhakala-75,Sukhakala,Indonesia,Liberica The Sultan,,-3.0002180,104.7314500,,,,,
+sukhakala-76,Sukhakala,Indonesia,Camell Cafe,,-5.1573290,119.4201470
