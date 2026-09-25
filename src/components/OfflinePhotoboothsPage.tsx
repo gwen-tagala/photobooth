@@ -137,6 +137,106 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
             ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     };
 
+    // const toggleLayer = (item: string) => {
+    //     const layerSetter =
+    //         layerGroup === "country"
+    //             ? setSelectedCountries
+    //             : setSelectedVendors;
+
+    //     const branchSetter =
+    //         layerGroup === "country"
+    //             ? setSelectedCountryBranches
+    //             : setSelectedVendorBranches;
+
+    //     const parentLayer = layerTree.find((layer) => layer.name === item);
+
+    //     const parentBranchKeys =
+    //         parentLayer?.children.map((child) => branchKey(item, child.name)) ??
+    //         [];
+
+    //     const allBranchKeys = layerTree.flatMap((layer) =>
+    //         layer.children.map((child) => branchKey(layer.name, child.name)),
+    //     );
+
+    //     const parentIsSelected =
+    //         selectedLayers === null || selectedLayers.includes(item);
+
+    //     if (parentIsSelected) {
+    //         // ==========================================
+    //         // UNCHECK PARENT
+    //         // ==========================================
+
+    //         const nextLayers =
+    //             selectedLayers === null
+    //                 ? layerItems.filter((layer) => layer !== item)
+    //                 : selectedLayers.filter((layer) => layer !== item);
+
+    //         layerSetter(nextLayers);
+
+    //         // Also uncheck ALL children belonging to
+    //         // this parent.
+    //         const nextBranches =
+    //             selectedBranches === null
+    //                 ? allBranchKeys.filter(
+    //                       (key) => !parentBranchKeys.includes(key),
+    //                   )
+    //                 : selectedBranches.filter(
+    //                       (key) => !parentBranchKeys.includes(key),
+    //                   );
+
+    //         branchSetter(nextBranches);
+
+    //         // ==========================================
+    //         // COLLAPSE PARENT
+    //         // ==========================================
+
+    //         const parentCollapseKey = `${layerGroup}:${item}`;
+
+    //         setCollapsedLayers((current) =>
+    //             current.includes(parentCollapseKey)
+    //                 ? current
+    //                 : [...current, parentCollapseKey],
+    //         );
+    //     } else {
+    //         // ==========================================
+    //         // CHECK PARENT
+    //         // ==========================================
+
+    //         const nextLayers =
+    //             selectedLayers === null
+    //                 ? null
+    //                 : [...new Set([...selectedLayers, item])];
+
+    //         // If every parent is now selected,
+    //         // normalize to null = ALL.
+    //         if (
+    //             nextLayers === null ||
+    //             nextLayers.length === layerItems.length
+    //         ) {
+    //             layerSetter(null);
+    //         } else {
+    //             layerSetter(nextLayers);
+    //         }
+
+    //         // Checking a parent checks ALL its children.
+    //         const nextBranches =
+    //             selectedBranches === null
+    //                 ? null
+    //                 : [...new Set([...selectedBranches, ...parentBranchKeys])];
+
+    //         // If every child across every parent is now
+    //         // selected, normalize to null = ALL.
+    //         if (
+    //             nextBranches === null ||
+    //             nextBranches.length === allBranchKeys.length
+    //         ) {
+    //             branchSetter(null);
+    //         } else {
+    //             branchSetter(nextBranches);
+    //         }
+    //     }
+    // };
+
     const toggleLayer = (item: string) => {
         const layerSetter =
             layerGroup === "country"
@@ -161,6 +261,8 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
         const parentIsSelected =
             selectedLayers === null || selectedLayers.includes(item);
 
+        const parentCollapseKey = `${layerGroup}:${item}`;
+
         if (parentIsSelected) {
             // ==========================================
             // UNCHECK PARENT
@@ -173,8 +275,7 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
 
             layerSetter(nextLayers);
 
-            // Also uncheck ALL children belonging to
-            // this parent.
+            // Uncheck ALL children belonging to this parent
             const nextBranches =
                 selectedBranches === null
                     ? allBranchKeys.filter(
@@ -185,6 +286,13 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
                       );
 
             branchSetter(nextBranches);
+
+            // Collapse the parent
+            setCollapsedLayers((current) =>
+                current.includes(parentCollapseKey)
+                    ? current
+                    : [...current, parentCollapseKey],
+            );
         } else {
             // ==========================================
             // CHECK PARENT
@@ -206,14 +314,14 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
                 layerSetter(nextLayers);
             }
 
-            // Checking a parent checks ALL its children.
+            // Checking a parent checks ALL of its children
             const nextBranches =
                 selectedBranches === null
                     ? null
                     : [...new Set([...selectedBranches, ...parentBranchKeys])];
 
-            // If every child across every parent is now
-            // selected, normalize to null = ALL.
+            // If every child across every parent is selected,
+            // normalize to null = ALL.
             if (
                 nextBranches === null ||
                 nextBranches.length === allBranchKeys.length
@@ -222,6 +330,11 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
             } else {
                 branchSetter(nextBranches);
             }
+
+            // Expand the parent
+            setCollapsedLayers((current) =>
+                current.filter((key) => key !== parentCollapseKey),
+            );
         }
     };
 

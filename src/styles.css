@@ -1439,6 +1439,7 @@ h1 span {
     background: #efe6d4;
 }
 .layer-option.is-all {
+    padding-top: 8px;
     padding-bottom: 8px;
     border-bottom: 1px solid #172c4c35;
     font-weight: 700;
