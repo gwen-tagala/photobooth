@@ -1,6 +1,5 @@
 import { photoboothLocations } from "./photoboothLocations";
 
-// const MIN_HUE_DISTANCE = 45;
 const HUE_STEP = 7;
 
 function getVendorSeed(vendor: string, country: string) {
