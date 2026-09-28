@@ -64,16 +64,19 @@ export function PhotoboothMap({
             worldCopyJump: true,
             scrollWheelZoom: true,
         }).setView([20, 0], 2);
+
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
             attribution:
                 '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-            maxZoom: 19,
+            maxZoom: 22,
         }).addTo(map);
+
         const markerLayer = L.layerGroup().addTo(map);
         mapRef.current = map;
         layerRef.current = markerLayer;
         const resizeObserver = new ResizeObserver(() => map.invalidateSize());
         resizeObserver.observe(containerRef.current);
+
         return () => {
             resizeObserver.disconnect();
             map.remove();
@@ -115,7 +118,7 @@ export function PhotoboothMap({
                 L.latLngBounds(markers.map((marker) => marker.getLatLng())).pad(
                     0.12,
                 ),
-                { maxZoom: 12 },
+                { maxZoom: 18 },
             );
         return () => {
             markerLayer.clearLayers();
@@ -128,7 +131,7 @@ export function PhotoboothMap({
         if (!marker) return;
         const map = mapRef.current;
         if (!map) return;
-        const targetZoom = Math.max(map.getZoom(), 15);
+        const targetZoom = Math.max(map.getZoom(), 18);
         map.setView(marker.getLatLng(), targetZoom);
         marker.openPopup();
     }, [selectedLocationId, locations]);

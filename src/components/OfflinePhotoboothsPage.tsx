@@ -129,113 +129,68 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
             }),
         [layerGroup, selectedBranches, selectedLayers],
     );
+
     const hasFilters = selectedLayers !== null || selectedBranches !== null;
-    const selectLocation = (id: string) => {
-        setSelectedLocationId(id);
-        cardRefs.current
-            .get(id)
-            ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    };
 
-    // const toggleLayer = (item: string) => {
-    //     const layerSetter =
-    //         layerGroup === "country"
-    //             ? setSelectedCountries
-    //             : setSelectedVendors;
-
-    //     const branchSetter =
-    //         layerGroup === "country"
-    //             ? setSelectedCountryBranches
-    //             : setSelectedVendorBranches;
-
-    //     const parentLayer = layerTree.find((layer) => layer.name === item);
-
-    //     const parentBranchKeys =
-    //         parentLayer?.children.map((child) => branchKey(item, child.name)) ??
-    //         [];
-
-    //     const allBranchKeys = layerTree.flatMap((layer) =>
-    //         layer.children.map((child) => branchKey(layer.name, child.name)),
-    //     );
-
-    //     const parentIsSelected =
-    //         selectedLayers === null || selectedLayers.includes(item);
-
-    //     if (parentIsSelected) {
-    //         // ==========================================
-    //         // UNCHECK PARENT
-    //         // ==========================================
-
-    //         const nextLayers =
-    //             selectedLayers === null
-    //                 ? layerItems.filter((layer) => layer !== item)
-    //                 : selectedLayers.filter((layer) => layer !== item);
-
-    //         layerSetter(nextLayers);
-
-    //         // Also uncheck ALL children belonging to
-    //         // this parent.
-    //         const nextBranches =
-    //             selectedBranches === null
-    //                 ? allBranchKeys.filter(
-    //                       (key) => !parentBranchKeys.includes(key),
-    //                   )
-    //                 : selectedBranches.filter(
-    //                       (key) => !parentBranchKeys.includes(key),
-    //                   );
-
-    //         branchSetter(nextBranches);
-
-    //         // ==========================================
-    //         // COLLAPSE PARENT
-    //         // ==========================================
-
-    //         const parentCollapseKey = `${layerGroup}:${item}`;
-
-    //         setCollapsedLayers((current) =>
-    //             current.includes(parentCollapseKey)
-    //                 ? current
-    //                 : [...current, parentCollapseKey],
-    //         );
-    //     } else {
-    //         // ==========================================
-    //         // CHECK PARENT
-    //         // ==========================================
-
-    //         const nextLayers =
-    //             selectedLayers === null
-    //                 ? null
-    //                 : [...new Set([...selectedLayers, item])];
-
-    //         // If every parent is now selected,
-    //         // normalize to null = ALL.
-    //         if (
-    //             nextLayers === null ||
-    //             nextLayers.length === layerItems.length
-    //         ) {
-    //             layerSetter(null);
-    //         } else {
-    //             layerSetter(nextLayers);
-    //         }
-
-    //         // Checking a parent checks ALL its children.
-    //         const nextBranches =
-    //             selectedBranches === null
-    //                 ? null
-    //                 : [...new Set([...selectedBranches, ...parentBranchKeys])];
-
-    //         // If every child across every parent is now
-    //         // selected, normalize to null = ALL.
-    //         if (
-    //             nextBranches === null ||
-    //             nextBranches.length === allBranchKeys.length
-    //         ) {
-    //             branchSetter(null);
-    //         } else {
-    //             branchSetter(nextBranches);
-    //         }
-    //     }
+    // const selectLocation = (id: string) => {
+    //     setSelectedLocationId(id);
+    //     cardRefs.current
+    //         .get(id)
+    //         ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     // };
+
+    const selectLocation = (id: string) => {
+        const location = photoboothLocations.find((item) => item.id === id);
+
+        if (!location) return;
+
+        setSelectedLocationId(id);
+
+        const parent =
+            layerGroup === "country" ? location.country : location.vendor;
+
+        const child =
+            layerGroup === "country" ? location.vendor : location.country;
+
+        const parentKey = `${layerGroup}:${parent}`;
+        const childKey = `${layerGroup}:${parent}:${child}`;
+
+        // Expand the parent and child so the location card becomes visible.
+        setCollapsedLayers((current) =>
+            current.filter((key) => key !== parentKey && key !== childKey),
+        );
+
+        // Make sure the location's parent is selected.
+        const layerSetter =
+            layerGroup === "country"
+                ? setSelectedCountries
+                : setSelectedVendors;
+
+        const branchSetter =
+            layerGroup === "country"
+                ? setSelectedCountryBranches
+                : setSelectedVendorBranches;
+
+        if (selectedLayers !== null && !selectedLayers.includes(parent)) {
+            layerSetter([...selectedLayers, parent]);
+        }
+
+        const branch = branchKey(parent, child);
+
+        if (selectedBranches !== null && !selectedBranches.includes(branch)) {
+            branchSetter([...selectedBranches, branch]);
+        }
+
+        // Scroll after React has expanded the tree.
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                cardRefs.current.get(id)?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest",
+                });
+            });
+        });
+    };
 
     const toggleLayer = (item: string) => {
         const layerSetter =
