@@ -1497,6 +1497,7 @@ h1 span {
     margin: 0;
     accent-color: var(--red);
 }
+.layer-option > i,
 .layer-child i {
     width: 13px;
     height: 13px;

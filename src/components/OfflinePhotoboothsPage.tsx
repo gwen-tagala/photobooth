@@ -2,7 +2,7 @@ import { useMemo, useRef, useState, type CSSProperties } from "react";
 import { ArrowLeft, ChevronDown, ChevronRight, MapPin } from "lucide-react";
 import { PhotoboothMap } from "./PhotoboothMap";
 import { photoboothLocations } from "../data/photoboothLocations";
-import { getLocationColor } from "../data/vendorConfig";
+import { getVendorColor } from "../data/vendorConfig";
 
 interface Props {
     onBack: () => void;
@@ -87,9 +87,8 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
                         locations: parentLocations.filter(
                             (location) => location[childKey] === child,
                         ),
-                        color: getLocationColor(
+                        color: getVendorColor(
                             layerGroup === "country" ? child : parent,
-                            child,
                         ),
                     }));
                 return { name: parent, children, locations: parentLocations };
@@ -484,10 +483,7 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
             className={`location-card${selectedLocationId === location.id ? " is-active" : ""}`}
             style={
                 {
-                    "--vendor-color": getLocationColor(
-                        location.vendor,
-                        location.branchName,
-                    ),
+                    "--vendor-color": getVendorColor(location.vendor),
                 } as CSSProperties
             }
             onClick={() => selectLocation(location.id)}
@@ -604,6 +600,16 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
                                                         toggleLayer(layer.name)
                                                     }
                                                 />
+                                                {layerGroup === "vendor" && (
+                                                    <i
+                                                        style={{
+                                                            backgroundColor:
+                                                                getVendorColor(
+                                                                    layer.name,
+                                                                ),
+                                                        }}
+                                                    />
+                                                )}
                                                 {layer.name}
                                             </label>
                                             <button
@@ -677,12 +683,15 @@ export function OfflinePhotoboothsPage({ onBack }: Props) {
                                                                             )
                                                                         }
                                                                     />
-                                                                    <i
-                                                                        style={{
-                                                                            backgroundColor:
-                                                                                child.color,
-                                                                        }}
-                                                                    />
+                                                                    {layerGroup ===
+                                                                    "country" ? (
+                                                                        <i
+                                                                            style={{
+                                                                                backgroundColor:
+                                                                                    child.color,
+                                                                            }}
+                                                                        />
+                                                                    ) : null}
                                                                     {child.name}{" "}
                                                                     <small>
                                                                         (
