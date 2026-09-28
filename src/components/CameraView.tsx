@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import type { RefObject } from "react";
 import { Eye, EyeOff, X, SwitchCamera, Timer } from "lucide-react";
 import type { CountdownSeconds } from "../hooks/usePhotobooth";
@@ -42,8 +42,6 @@ interface Props {
 
 export function CameraView(props: Props) {
     const [isFrameSelectorOpen, setIsFrameSelectorOpen] = useState(false);
-    const [timerNotice, setTimerNotice] = useState<number | null>(null);
-    const timerNoticeTimeout = useRef<number | null>(null);
     const mirrored = props.cameraMode === "user";
     const sessionControlsHidden =
         props.isRetaking || props.isCapturing || props.photoCount > 0;
@@ -62,6 +60,7 @@ export function CameraView(props: Props) {
             : props.captureStatus.state === "captured"
               ? `Photo #${props.captureStatus.photoIndex + 1} acquired`
               : "Tap the shutter to take a photo";
+
     const cycleTimer = () => {
         const nextSeconds: CountdownSeconds =
             props.countdownSeconds === 3
@@ -70,24 +69,7 @@ export function CameraView(props: Props) {
                   ? 10
                   : 3;
         props.onCountdownSecondsChange(nextSeconds);
-        setTimerNotice(nextSeconds);
-        if (timerNoticeTimeout.current !== null) {
-            window.clearTimeout(timerNoticeTimeout.current);
-        }
-        timerNoticeTimeout.current = window.setTimeout(
-            () => setTimerNotice(null),
-            900,
-        );
     };
-
-    useEffect(
-        () => () => {
-            if (timerNoticeTimeout.current !== null) {
-                window.clearTimeout(timerNoticeTimeout.current);
-            }
-        },
-        [],
-    );
 
     return (
         <main className="camera-page page-shell">
@@ -182,11 +164,7 @@ export function CameraView(props: Props) {
                     )}
 
                 <Countdown value={props.countdown} />
-                {timerNotice !== null && (
-                    <div className="timer-notice" aria-live="polite">
-                        {timerNotice}s
-                    </div>
-                )}
+
                 <div className="flash" />
             </div>
 
