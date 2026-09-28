@@ -46,7 +46,9 @@ function parseCsv(text: string): string[][] {
     }
 
     row.push(field);
+
     if (row.some((value) => value.trim())) rows.push(row);
+
     return rows;
 }
 

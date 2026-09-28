@@ -34,6 +34,7 @@ function popupContent(location: PhotoboothLocation) {
     ]
         .filter(Boolean)
         .join("");
+
     return `<article class="booth-popup">
         <span>${escapeHtml(location.vendor)}</span>
         <strong>${escapeHtml(location.branchName)}</strong>
@@ -88,9 +89,12 @@ export function PhotoboothMap({
     useEffect(() => {
         const map = mapRef.current;
         const markerLayer = layerRef.current;
+
         if (!map || !markerLayer) return;
+
         markerLayer.clearLayers();
         markersRef.current.clear();
+
         const markers = locations.map((location) => {
             const color = getVendorColor(location.vendor);
             const icon = L.divIcon({
@@ -110,7 +114,9 @@ export function PhotoboothMap({
             markersRef.current.set(location.id, marker);
             return marker;
         });
+
         markers.forEach((marker) => marker.addTo(markerLayer));
+
         if (locations.length === 1)
             map.setView([locations[0].latitude, locations[0].longitude], 12);
         else if (locations.length > 1)
@@ -120,6 +126,7 @@ export function PhotoboothMap({
                 ),
                 { maxZoom: 18 },
             );
+
         return () => {
             markerLayer.clearLayers();
         };
